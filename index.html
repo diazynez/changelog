@@ -203,7 +203,9 @@
 
   <!-- ===== 详情抽屉 ===== -->
   <div class="overlay" :class="{ show: !!selected }" @click="selected = null"></div>
-  <aside class="drawer" :class="{ show: !!selected }" v-if="selected" role="dialog" aria-modal="true">
+  <!-- 用 Transition 让 v-if 插入时先落在屏幕外，再过渡进来（见 .drawer-enter-from） -->
+  <Transition name="drawer">
+  <aside class="drawer" v-if="selected" role="dialog" aria-modal="true">
     <div class="dhead">
       <button class="close" @click="selected = null" aria-label="关闭">×</button>
       <div class="dtitle">
@@ -246,6 +248,7 @@
       </div>
     </div>
   </aside>
+  </Transition>
 
   <!-- ===== 图片灯箱 ===== -->
   <div class="lightbox" :class="{ show: !!zoom }" @click.self="zoom = null">

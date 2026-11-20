@@ -101,10 +101,11 @@ figure{margin:0}
 /* ---------- DETAIL DRAWER ---------- */
 .overlay{position:fixed;inset:0;background:rgba(16,20,35,.5);backdrop-filter:blur(3px);z-index:80;opacity:0;pointer-events:none;transition:.25s}
 .overlay.show{opacity:1;pointer-events:auto}
-/* 抽屉滑入用 right 过渡，不用 transform：祖先带 transform 会让内部 position:sticky 失效
-   （版本组头要吸顶）。right 可正常插值，动画观感一致。 */
-.drawer{position:fixed;top:0;right:calc(min(620px,94vw) * -1);bottom:0;width:min(620px,94vw);background:var(--bg);z-index:90;transition:right .3s cubic-bezier(.22,.7,.3,1);box-shadow:-12px 0 50px rgba(20,28,50,.2);display:flex;flex-direction:column}
-.drawer.show{right:0}
+/* 抽屉滑入/滑出用 right 过渡，不用 transform：祖先只要带 transform（哪怕是单位矩阵）
+   就会成为 sticky 的包含块，版本组头的吸顶会失效。进出位置由 vue 的
+   <Transition name="drawer"> 挂上下面这个类。 */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(620px,94vw);background:var(--bg);z-index:90;transition:right .3s cubic-bezier(.22,.7,.3,1);box-shadow:-12px 0 50px rgba(20,28,50,.2);display:flex;flex-direction:column}
+.drawer-enter-from,.drawer-leave-to{right:calc(min(620px,94vw) * -1)}
 .dhead{padding:20px 24px 16px;background:#fff;border-bottom:1px solid var(--line);position:relative}
 .dhead .close{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:20px;color:var(--muted);line-height:1}
 .dhead .close:hover{color:var(--ink);border-color:#cdd3de}
