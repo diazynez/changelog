@@ -120,7 +120,8 @@ figure{margin:0}
 .dt.tier.high{background:#fff0e0;color:#c96c05}
 .dt.tier.god{background:#f3e8ff;color:#7a3fc0}
 .dnone{margin:6px 0 14px;padding:26px 22px;border:1px dashed var(--line);border-radius:12px;background:#fff;color:var(--muted);font-size:13px;text-align:center}
-/* 顶部 16px 渐隐：滚动时被推到顶端的内容淡出，不会出现「半行硬裁」；
+/* 顶部 12px 渐隐：滚动时被推到顶端的内容淡出，不做「半行硬裁」；
+   渐隐高度 < 正文上内边距(18/14px)，所以初始位置（含按版本定位后的安全区）首行完全清晰。
    组头已取消 sticky（原先吸顶会与内容脱离、遮住首行） */
 .dbody{flex:1;overflow:auto;padding:18px 24px 40px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 12px);mask-image:linear-gradient(to bottom,transparent 0,#000 12px)}
 .vgroup{margin-bottom:18px}
