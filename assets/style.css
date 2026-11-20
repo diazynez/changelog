@@ -122,7 +122,7 @@ figure{margin:0}
 .dnone{margin:6px 0 14px;padding:26px 22px;border:1px dashed var(--line);border-radius:12px;background:#fff;color:var(--muted);font-size:13px;text-align:center}
 /* 顶部 16px 渐隐：滚动时被推到顶端的内容淡出，不会出现「半行硬裁」；
    组头已取消 sticky（原先吸顶会与内容脱离、遮住首行） */
-.dbody{flex:1;overflow:auto;padding:18px 24px 40px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16px);mask-image:linear-gradient(to bottom,transparent 0,#000 16px)}
+.dbody{flex:1;overflow:auto;padding:18px 24px 40px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 12px);mask-image:linear-gradient(to bottom,transparent 0,#000 12px)}
 .vgroup{margin-bottom:18px}
 .vg-head{display:flex;align-items:center;gap:9px;padding:9px 12px;background:#fff;border:1px solid var(--line);border-radius:10px 10px 0 0;cursor:pointer}
 .vg-head .vv{font-weight:900;font-size:13.5px;color:var(--brand)}

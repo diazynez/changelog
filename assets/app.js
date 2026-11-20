@@ -367,7 +367,11 @@
         );
         if (!g) return;
         // 用 rect 差值算偏移：offsetTop 的参照系不一定就是 .dbody
-        body.scrollTop += g.getBoundingClientRect().top - body.getBoundingClientRect().top;
+        const dy = g.getBoundingClientRect().top - body.getBoundingClientRect().top;
+        // 顶部安全区：贴顶会让目标组头落进内边距/顶部渐隐里，第一行看起来被吞掉。
+        // 留出「正文上内边距 + 4px」，定位后组头完整、与标题栏有正常间距。
+        const padTop = parseFloat(getComputedStyle(body).paddingTop) || 0;
+        body.scrollTop += dy - padTop - 4;
       }
     }
   });
