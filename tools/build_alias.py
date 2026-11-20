@@ -6,6 +6,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "sources")
 OUT = os.path.join(ROOT, "tools", "data", "alias_map.json")
 
+# sources/ 为原始参考资料，按 .gitignore 不纳入仓库，只保留在本地
+if not os.path.isdir(SRC):
+    raise SystemExit(
+        "找不到 sources/ 目录（含 zh-CN.json）。\n"
+        "该目录不纳入 git 仓库，需从本地备份恢复后才能重建别名表。\n"
+        "成品 tools/data/alias_map.json 已随仓库提供，仅改别名时才需重跑本脚本。"
+    )
+
 lang = json.load(io.open(os.path.join(SRC, "zh-CN.json"), encoding="utf-8"))
 fighters = lang["name"]["fighter"]
 

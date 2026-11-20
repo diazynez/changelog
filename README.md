@@ -3,7 +3,7 @@
 以**角色**为核心的版本改动档案站点。把各版本《更新内容 / 并阶改动》文档与官方补丁长图里的调整，
 按角色聚合到一张卡片上，并标注版本发布日；主程序开发日志作为补充。
 
-- 站点：`index.html`（Vue 3，通过 Cloudflare CDN 加载，无需打包）
+- 站点：`index.html`（Vue 3，**运行时库已内置于 `assets/vendor/`，无任何外部请求**）
 - 数据：`data/changelog.js`（构建产物）
 - 当前规模：135 个角色 / 形态、2235 条改动、33 个版本、30 个查证到的发布日
 
@@ -12,13 +12,16 @@
 ## 目录结构
 
 站点文件与源数据、工具严格分开，只有下面「站点」部分会对外发布。
+`sources/`（原始参考资料）**不纳入仓库**，只保留在本地。
 
 ```
 .
 ├── index.html                  # 【站点】唯一页面
 ├── assets/
 │   ├── style.css               # 【站点】样式
-│   └── app.js                  # 【站点】Vue 应用逻辑
+│   ├── app.js                  # 【站点】Vue 应用逻辑
+│   └── vendor/
+│       └── vue.global.prod.min.js   # 【站点】Vue 3.5.22 本地副本
 ├── data/
 │   ├── changelog.json          # 【站点】构建产物（原始 JSON，供外部复用）
 │   └── changelog.js            # 【站点】同一份数据的 JS 包装，页面直接 <script> 加载
@@ -27,7 +30,7 @@
 │   ├── patches/                # 【站点】补丁调整长图原图
 │   └── refs/                   # 【站点】玩家俗称表参考图
 │
-├── sources/                    # 【非站点】原始参考资料，不参与构建产物
+├── sources/                    # 【本地·已被 gitignore】原始参考资料
 │   ├── readme/                 #   各版本 docx、主程序开发日志、历史留档
 │   ├── config/                 #   游戏内 fighter.xml / assist.xml（阵营来源）
 │   └── zh-CN.json              #   中文语言文件（角色正式名来源）
@@ -43,6 +46,14 @@
         └── release_dates.json  #   版本发布日与来源
 ```
 
+### 关于原始资料与依赖
+
+- **原始资料不公开**：`sources/` 被 `.gitignore` 排除，克隆仓库拿不到 docx / config / 语言文件。
+  要让这些文件不进入 git 历史，仓库只保留站点成品与构建脚本；重建数据需自备 `sources/`。
+- **依赖零外链**：Vue 已下载到 `assets/vendor/vue.global.prod.min.js`（3.5.22 全局生产构建）。
+  页面不会向任何 CDN 发请求，离线、内网、Pages 均可直接跑。
+  升级 Vue 时替换该文件即可，`index.html` 无需改动。
+
 ---
 
 ## 本地预览
@@ -57,7 +68,7 @@ python -m http.server 8899
 
 ## 重新构建数据
 
-需要 Python 3.9+ 与 `python-docx`：
+需要 Python 3.9+、`python-docx`，以及**本地自备的 `sources/` 目录**（不在仓库里）：
 
 ```bash
 pip install python-docx
@@ -66,6 +77,8 @@ python tools/build.py          # sources/ + tools/data/ → data/changelog.{json
 ```
 
 构建完刷新页面即可。`data/` 是产物，可以随时删掉重建。
+`sources/` 缺失时脚本会直接报错退出，并提示成品 `data/changelog.js` 已在仓库中、
+只更新站点内容时无需重新构建。
 
 ## 维护指引
 
@@ -85,23 +98,24 @@ python tools/build.py          # sources/ + tools/data/ → data/changelog.{json
 
 ## 部署到 GitHub Pages
 
+仓库已初始化并推送到 `https://github.com/diazynez/changelog.git`（分支 `main`）。
+日常更新只需：
+
 ```bash
-git init
-git add .
-git commit -m "init: changelog site"
-git branch -M main
-git remote add origin https://github.com/<你的账号>/<仓库名>.git
-git push -u origin main
+git add -A
+git commit -m "chore: 更新数据"
+git push
 ```
 
-然后在仓库 **Settings → Pages**：
+仓库 **Settings → Pages** 设置一次即可：
 
 - Source 选 **Deploy from a branch**
 - Branch 选 **main**，目录选 **/(root)**
 - 保存后等 1 分钟左右，访问 `https://<你的账号>.github.io/<仓库名>/`
 
-站点全部使用相对路径，放在仓库根目录即可直接访问，无需任何构建步骤。
-仓库内的 `sources/`、`tools/` 不会影响页面运行（只是同样会被镜像发布，介意可以改成 `/docs` 目录发布）。
+站点全部使用相对路径，放在仓库根目录即可直接访问，无需任何构建步骤，也不依赖任何 CDN。
+`.nojekyll` 已就位，避免 Jekyll 处理中文文件名。
+`sources/` 不会被发布（已 gitignore），`tools/` 会随仓库公开但只是脚本，不含原始资料。
 
 ## 待补充
 

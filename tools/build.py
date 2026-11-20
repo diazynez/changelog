@@ -15,6 +15,15 @@ READ = os.path.join(SRC, "readme")
 TOOLDATA = os.path.join(ROOT, "tools", "data")
 OUTDIR = os.path.join(ROOT, "data")
 
+# sources/ 为原始参考资料，按 .gitignore 不纳入仓库，只保留在本地
+if not os.path.isdir(SRC):
+    raise SystemExit(
+        "找不到 sources/ 目录。\n"
+        "该目录存放原始参考资料（各版本 docx、config、zh-CN.json），出于不公开原始资料的要求\n"
+        "未纳入 git 仓库，需要从本地备份恢复后才能重建数据。\n"
+        "若只想更新站点成品，data/changelog.js 已随仓库提供，无需重新构建。"
+    )
+
 alias = json.load(open(os.path.join(TOOLDATA, "alias_map.json"), encoding="utf-8"))
 alias2id = alias["alias2id"]
 official = alias["official"]
