@@ -368,10 +368,12 @@
         if (!g) return;
         // 用 rect 差值算偏移：offsetTop 的参照系不一定就是 .dbody
         const dy = g.getBoundingClientRect().top - body.getBoundingClientRect().top;
-        // 顶部安全区：贴顶会让目标组头落进内边距/顶部渐隐里，第一行看起来被吞掉。
-        // 留出「正文上内边距 + 4px」，定位后组头完整、与标题栏有正常间距。
-        const padTop = parseFloat(getComputedStyle(body).paddingTop) || 0;
-        body.scrollTop += dy - padTop - 4;
+        // 顶部安全区：贴顶会让目标组头贴着抽屉标题栏，第一行看着被吞掉。
+        // 正文的顶部留白现在由 --pad-top（首个子元素的 margin-top）提供，padding-top 是 0，
+        // 所以这里读变量而不是 paddingTop；多留 4px 让组头边框不压在上边缘。
+        const css = getComputedStyle(body);
+        const safeTop = parseFloat(css.getPropertyValue('--pad-top')) || 18;
+        body.scrollTop += dy - safeTop - 4;
       }
     }
   });

@@ -101,8 +101,10 @@ figure{margin:0}
 /* ---------- DETAIL DRAWER ---------- */
 .overlay{position:fixed;inset:0;background:rgba(16,20,35,.5);backdrop-filter:blur(3px);z-index:80;opacity:0;pointer-events:none;transition:.25s}
 .overlay.show{opacity:1;pointer-events:auto}
-.drawer{position:fixed;top:0;right:0;bottom:0;width:min(620px,94vw);background:var(--bg);z-index:90;transform:translateX(105%);transition:transform .3s cubic-bezier(.22,.7,.3,1);box-shadow:-12px 0 50px rgba(20,28,50,.2);display:flex;flex-direction:column}
-.drawer.show{transform:translateX(0)}
+/* 抽屉滑入用 right 过渡，不用 transform：祖先带 transform 会让内部 position:sticky 失效
+   （版本组头要吸顶）。right 可正常插值，动画观感一致。 */
+.drawer{position:fixed;top:0;right:calc(min(620px,94vw) * -1);bottom:0;width:min(620px,94vw);background:var(--bg);z-index:90;transition:right .3s cubic-bezier(.22,.7,.3,1);box-shadow:-12px 0 50px rgba(20,28,50,.2);display:flex;flex-direction:column}
+.drawer.show{right:0}
 .dhead{padding:20px 24px 16px;background:#fff;border-bottom:1px solid var(--line);position:relative}
 .dhead .close{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:20px;color:var(--muted);line-height:1}
 .dhead .close:hover{color:var(--ink);border-color:#cdd3de}
@@ -120,12 +122,12 @@ figure{margin:0}
 .dt.tier.high{background:#fff0e0;color:#c96c05}
 .dt.tier.god{background:#f3e8ff;color:#7a3fc0}
 .dnone{margin:6px 0 14px;padding:26px 22px;border:1px dashed var(--line);border-radius:12px;background:#fff;color:var(--muted);font-size:13px;text-align:center}
-/* 顶部 12px 渐隐：滚动时被推到顶端的内容淡出，不做「半行硬裁」；
-   渐隐高度 < 正文上内边距(18/14px)，所以初始位置（含按版本定位后的安全区）首行完全清晰。
-   组头已取消 sticky（原先吸顶会与内容脱离、遮住首行） */
-.dbody{flex:1;overflow:auto;padding:18px 24px 40px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 12px);mask-image:linear-gradient(to bottom,transparent 0,#000 12px)}
+/* 组头吸顶：滚动时当前版本始终可见。padding-top 改由首个子元素的 margin 提供，
+   这样 sticky 贴在滚动容器最顶端（0），吸顶头上方不会再露出上一组的半行残片。 */
+.dbody{--pad-top:18px;flex:1;overflow:auto;padding:0 24px 40px}
+.dbody>:first-child{margin-top:var(--pad-top)}
 .vgroup{margin-bottom:18px}
-.vg-head{display:flex;align-items:center;gap:9px;padding:9px 12px;background:#fff;border:1px solid var(--line);border-radius:10px 10px 0 0;cursor:pointer}
+.vg-head{display:flex;align-items:center;gap:9px;padding:9px 12px;background:#fff;border:1px solid var(--line);border-radius:10px 10px 0 0;cursor:pointer;position:sticky;top:0;z-index:2}
 .vg-head .vv{font-weight:900;font-size:13.5px;color:var(--brand)}
 .vg-head .vd{font-size:11px;color:var(--muted)}
 .vg-head .vrel{font-size:10px;padding:2px 7px;border-radius:5px;background:var(--add-bg);color:var(--add);font-weight:700}
@@ -230,7 +232,7 @@ figure{margin:0}
   .screens{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
   #refs{grid-template-columns:1fr}
   .dhead{padding:16px 16px 13px}
-  .dbody{padding:14px 14px 32px}
+  .dbody{--pad-top:14px;padding:0 14px 32px}
   .dtitle h3{font-size:18px}
   .note-box{padding:12px 14px;font-size:11.5px}
 }
