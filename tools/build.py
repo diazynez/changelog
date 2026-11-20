@@ -267,7 +267,7 @@ VERSION_ORDER = ["3.8.8.6", "3.8.8.5", "3.8.8.4", "3.8.8.3", "3.8.8.2", "3.8.8.1
                  "3.8.2.1", "3.8.2", "3.8.1.1", "3.8.1", "3.8.0.3", "3.8.0.2", "3.8.0.1", "3.8.0"]
 
 # 有版本号但暂时没有任何改动记录的版本（后续拿到资料再补）
-PENDING_VERSIONS = {"3.8.5.10": "该版本暂无改动记录，待补充"}
+PENDING_VERSIONS = {}
 
 
 def doc_key(v):
@@ -359,42 +359,54 @@ FORM_SPLIT = {
     ("renji", "卍解"): "renji_bankai", ("renji", "始解"): "renji",
     ("rukia", "义骸"): "rukia", ("rukia", "始解"): "rukia_shikai",
     ("sasuke", "须佐能乎"): "sasuke_susanoo", ("sasuke", "鹰小队"): "sasuke_taka",
+    ("sasuke", "鹰佐"): "sasuke_taka", ("sasuke", "须佐"): "sasuke_susanoo",
+    # 旧版补丁截图里的简写形态
+    ("aizen", "崩玉一阶"): "aizen",
+    ("byakuya", "始解"): "byakuya", ("byakuya", "吭景"): "byakuya_bankai",
+    ("ichigo", "始解"): "ichigo", ("ichigo", "半卍"): "ichigo_hmb",
+    ("kimimaro", "音忍五人众"): "kimimaro_goninshu",
+    ("naruto", "渣鸣"): "naruto",
+    ("naruto_sennin", "仙鸣"): "naruto_sennin", ("naruto_sennin", "金鸣"): "naruto_kyubi",
+    ("pain", "六道"): "pain",
+    ("toushirou", "卍解"): "toushirou_bankai",
     ("uryuu", "银岭弧雀"): "uryuu_ginreigojiaku",
 }
 form_split_used = {}
 
-# screenshots
-shots = json.load(open(os.path.join(TOOLDATA, "screenshots.json"), encoding="utf-8"))
-for ver, sobj in shots.items():
-    for g in sobj.get("groups", []):
-        role = ROLE_ASSIST if g.get("title") == "辅助" else ROLE_MAIN
-        for ch in g.get("characters", []):
-            raw = ch.get("name", "")
-            fid = lookup(raw, None, role)
-            form = ch.get("form")
-            if fid is None:
-                unmatched.setdefault(raw, []).append(ver + "(图)")
-                fid = "RAW::" + raw
-                key = (fid, role)
-                c = chars.setdefault(key, {"id": fid, "baseId": fid, "name": split_name(raw),
-                                           "avatar": None, "versions": {}, "isAssist": role == ROLE_ASSIST, "role": role})
-            # 形态条目归到形态自己的卡片；形态前缀不再需要（卡片本身即该形态）
-            target = fid
-            if form and not fid.startswith("RAW::"):
-                fclean = re.sub(r'[（(]\s*调整负责[^）)]*[）)]', '', form).strip()
-                target = FORM_SPLIT.get((fid, fclean))
-                if target is None:
-                    form_split_used.setdefault((fid, fclean), 0)
-                    form_split_used[(fid, fclean)] += len(ch.get("items", []))
-                    target = fid  # 未知形态：保守起见仍留在基础角色
-            for it in ch.get("items", []):
-                txt = it
-                if txt.startswith("〔"):  # 源数据若已有前缀则去掉
-                    txt = re.sub(r'^〔.+?〕', '', txt)
-                if fid.startswith("RAW::"):
-                    c["versions"].setdefault(ver, []).append(txt)
-                else:
-                    add_change(target, ver, txt, role)
+# 补丁长图：screenshots.json 为 3.8.8 起的补丁长图转录，
+# docx_shots.json 为 3.8.8 以前各版本 docx 里内嵌的补丁截图转录。
+for _src in ("screenshots.json", "docx_shots.json"):
+    shots = json.load(open(os.path.join(TOOLDATA, _src), encoding="utf-8"))
+    for ver, sobj in shots.items():
+        for g in sobj.get("groups", []):
+            role = ROLE_ASSIST if g.get("title") == "辅助" else ROLE_MAIN
+            for ch in g.get("characters", []):
+                raw = ch.get("name", "")
+                fid = lookup(raw, None, role)
+                form = ch.get("form")
+                if fid is None:
+                    unmatched.setdefault(raw, []).append(ver + "(图)")
+                    fid = "RAW::" + raw
+                    key = (fid, role)
+                    c = chars.setdefault(key, {"id": fid, "baseId": fid, "name": split_name(raw),
+                                               "avatar": None, "versions": {}, "isAssist": role == ROLE_ASSIST, "role": role})
+                # 形态条目归到形态自己的卡片；形态前缀不再需要（卡片本身即该形态）
+                target = fid
+                if form and not fid.startswith("RAW::"):
+                    fclean = re.sub(r'[（(]\s*调整负责[^）)]*[）)]', '', form).strip()
+                    target = FORM_SPLIT.get((fid, fclean))
+                    if target is None:
+                        form_split_used.setdefault((fid, fclean), 0)
+                        form_split_used[(fid, fclean)] += len(ch.get("items", []))
+                        target = fid  # 未知形态：保守起见仍留在基础角色
+                for it in ch.get("items", []):
+                    txt = it
+                    if txt.startswith("〔"):  # 源数据若已有前缀则去掉
+                        txt = re.sub(r'^〔.+?〕', '', txt)
+                    if fid.startswith("RAW::"):
+                        c["versions"].setdefault(ver, []).append(txt)
+                    else:
+                        add_change(target, ver, txt, role)
 
 
 def vsort(v):

@@ -186,6 +186,8 @@ ALIASES = {
     "绝":"zetsu","小南":"konan","大野木":"onoki","土影":"onoki","奇拉比":"killerbee","羽高":"utakata","志志雄":"shishio","志志雄真实":"shishio","波妮":"bonnie",
     "雨龙":"uryuu","石田雨龙":"uryuu","石田·雨龙":"uryuu","雨龙 银岭弧雀":"uryuu_ginreigojiaku","银岭弧雀":"uryuu_ginreigojiaku","麻雀":"uryuu_ginreigojiaku","常态（弧雀）":"uryuu_ginreigojiaku",
     "茶渡":"chad","茶渡泰虎":"chad","茶渡·泰虎":"chad","魔人茶渡":"sado_muerte","二虎":"sado_muerte","茶渡·泰虎 魔人":"sado_muerte",
+    "茶渡泰虎 魔人":"sado_muerte","茶渡泰虎魔人":"sado_muerte",
+    "宇智波佐助 天手力":"sasuke_amenotejikara","宇智波佐助天手力":"sasuke_amenotejikara",
 
     # ---- generic-form combinations (parent + form) ----
     "恋次 卍解":"renji_bankai","恋次卍解":"renji_bankai","阿散井·恋次 卍解":"renji_bankai",
@@ -198,6 +200,7 @@ ALIASES = {
     "牛头":"ogihci_vasto_lord","牛头一护":"ogihci_vasto_lord",
     "一尾":"naruto_ver1","四尾":"naruto_ver2",
     "新辅助深作&志麻（蛤蟆夫妇）":"fukasaku","深作":"fukasaku","志麻":"fukasaku",
+    "蛤蟆仙人":"fukasaku","蛤蟆夫妇":"fukasaku","深作仙人":"fukasaku",
     # 「斩月 死神之力」在历史文档里指白·一护（死神之力的具现），不是主人物「斩月」
     "斩月 死神之力":"ogihci","斩月死神之力":"ogihci",
     # 裸「斩月」= 语言文件里的独立角色 zangetsu，待用户确认（文档中暂未出现该写法）
