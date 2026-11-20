@@ -125,7 +125,7 @@
 
       <div class="vlist">
         <div class="vblock" v-for="g in groups" :key="g.v" :class="{ open: openVer === g.v }">
-          <div class="vb-head" @click="openVer = openVer === g.v ? null : g.v">
+          <div class="vb-head" @click="toggleVer(g.v, $event)">
             <span class="vb-ver">V {{ g.v }}</span>
             <span class="vb-date" v-if="g.rel.logDate || g.rel.releaseDate">日志 {{ g.rel.logDate || g.rel.releaseDate }}</span>
             <span v-if="g.rel.releaseDate" class="vb-rel">发布 {{ g.rel.releaseDate }}</span>
@@ -160,7 +160,7 @@
 
       <div class="sec-head"><span class="kick"></span><h2>主程序开发日志</h2><span class="en">ENGINE LOG</span></div>
       <div class="ml-block" v-for="(m, i) in mainlog" :key="m.version" :class="{ open: openLog === m.version }">
-        <div class="ml-head" @click="openLog = openLog === m.version ? null : m.version">
+        <div class="ml-head" @click="toggleLog(m.version, $event)">
           <span class="v">V {{ m.version }}</span>
           <span class="d">{{ m.date }}</span>
           <span class="dt" v-if="m.verRange">ver {{ m.verRange }}</span>

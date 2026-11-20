@@ -209,6 +209,33 @@
         return this.q.trim().toLowerCase();
       },
 
+      /**
+       * 手风琴锚定：切换展开项后，把被点击的头部固定在屏幕原位置。
+       * 同时只展开一项，收起上方内容会让页面高度骤减，若只改状态不补偿滚动，
+       * 新展开的块会「跳」到视口外（上方内容越多跳得越远），用户得重新找。
+       */
+      toggleVer(v, ev) {
+        this.accToggle('openVer', v, ev.currentTarget);
+      },
+
+      toggleLog(v, ev) {
+        this.accToggle('openLog', v, ev.currentTarget);
+      },
+
+      accToggle(prop, key, head) {
+        const before = head.getBoundingClientRect().top;
+        this[prop] = this[prop] === key ? null : key;
+        this.$nextTick(() => {
+          const dy = head.getBoundingClientRect().top - before;
+          if (Math.abs(dy) < 1) return; // 位置没变（展开最上方一项）就不用补偿
+          const root = document.documentElement;
+          const prev = root.style.scrollBehavior;
+          root.style.scrollBehavior = 'auto'; // 全局是 smooth，补偿必须瞬时完成，否则会被动画拖走
+          window.scrollBy({ top: dy, left: 0, behavior: 'instant' });
+          root.style.scrollBehavior = prev;
+        });
+      },
+
       matchBase(c, q) {
         if (this.camp !== 'all' && (c.camp || 'other') !== this.camp) return false;
         if (this.type !== 'all' && (c.isAssist ? 'assist' : 'main') !== this.type) return false;
