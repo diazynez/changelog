@@ -368,8 +368,10 @@ FORM_SPLIT = {
     ("naruto", "渣鸣"): "naruto",
     ("naruto_sennin", "仙鸣"): "naruto_sennin", ("naruto_sennin", "金鸣"): "naruto_kyubi",
     ("pain", "六道"): "pain",
-    ("toushirou", "卍解"): "toushirou_bankai",
+    ("toushirou", "卍解"): "toushirou_bankai", ("toushirou", "始解"): "toushirou",
     ("uryuu", "银岭弧雀"): "uryuu_ginreigojiaku",
+    # 「斩月 死神之力」= 白·一护，其下始解/卍解分别为白·一护与白·一护 卍解
+    ("ogihci", "始解"): "ogihci", ("ogihci", "卍解"): "ogihci_bankai",
 }
 form_split_used = {}
 
