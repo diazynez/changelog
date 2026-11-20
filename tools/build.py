@@ -27,6 +27,11 @@ if not os.path.isdir(SRC):
 alias = json.load(open(os.path.join(TOOLDATA, "alias_map.json"), encoding="utf-8"))
 alias2id = alias["alias2id"]
 official = alias["official"]
+# 辅助位与主人物位并非一一对应（辅助只有 hiruko / starrk_resurrection 等），
+# 辅助段落的解析必须落在 assist.xml 的节点上。
+assist2id = alias.get("assist2id", {})
+ASSIST_FROM_MAIN = alias.get("assistFromMain", {})
+ASSIST_IDS = set(alias.get("assistIds", []))
 
 
 def norm(s):
@@ -54,38 +59,57 @@ FORM_PARENT = {
     ("uryuu", "常态"): "uryuu",
     ("ulquiorra", "常态"): "ulquiorra",
     ("ulquiorra", "归刃"): "ulquiorra_murcielago",
+    # 「斩月 死神之力」= 白·一护；其下的始解/卍解就是白·一护的始解/卍解
+    ("ogihci", "始解"): "ogihci",
+    ("ogihci", "卍解"): "ogihci_bankai",
+    # 3.8 的「卍护 › 虚化」其实是虚化卍解
+    ("ichigo_bankai", "虚化"): "ichigo_vizard",
 }
 
 
-def lookup(name, parent=None):
+def lookup(name, parent=None, role=None):
     n = name.strip().rstrip("：:")
     n = re.sub(r'[（(]\s*调整负责[：:][^)）]*[)）]', '', n).strip()
     n = re.sub(r'^(新角色|角色重置|新辅助|新增|新人物)\s*', '', n).strip()
+    # 辅助位有独立的角色集合：先按辅助表精确查，命中即用
+    if role == ROLE_ASSIST:
+        nc = norm(n)
+        if nc in assist2id:
+            return assist2id[nc]
     # 形态词（始解/卍解/虚化…）必须优先按「父级 + 形态」解析，
     # 否则裸词会先命中别名表里的默认角色，把别的角色的数据串进来。
     if parent and GENERIC_FORM.match(n.strip()):
         pclean = re.sub(r'[（(]\s*调整负责[：:][^)）]*[)）]', '', parent).strip().rstrip("：:")
-        pid = lookup(pclean)                      # 父级自身（非形态词，不会递归）
+        pid = lookup(pclean, role=role)          # 父级自身（非形态词，不会递归）
         if pid and (pid, n) in FORM_PARENT:
             return FORM_PARENT[(pid, n)]
         for cand in (pclean + " " + n, pclean + n):
             nc = norm(cand)
             if nc in alias2id:
                 return alias2id[nc]
+            if role == ROLE_ASSIST and nc in assist2id:
+                return assist2id[nc]
         # 组合与表都没命中：宁可不猜，交给调用方按父级兜底
         return None
-    for cand in (n,):
-        nc = norm(cand)
-        if nc in alias2id:
-            return alias2id[nc]
-    # longest partial (on the plain name)
-    best = None
+    fid = None
     nc = norm(n)
-    for a, fid in alias2id.items():
-        if len(a) >= 2 and a in nc:
-            if best is None or len(a) > len(best[0]):
-                best = (a, fid)
-    return best[1] if best else None
+    if nc in alias2id:
+        fid = alias2id[nc]
+    else:
+        # longest partial (on the plain name)
+        best = None
+        for a, aid in alias2id.items():
+            if len(a) >= 2 and a in nc:
+                if best is None or len(a) > len(best[0]):
+                    best = (a, aid)
+        fid = best[1] if best else None
+    if role == ROLE_ASSIST and fid:
+        # 主人物位解析结果若不在辅助节点集合里，按历史对应关系换到辅助形态；
+        # 换不到就判为未匹配（绝不生成「主人物的辅助卡」这种错数据）。
+        if fid in ASSIST_IDS:
+            return fid
+        return ASSIST_FROM_MAIN.get(fid)
+    return fid
 
 
 # ---------- docx parsing ----------
@@ -150,6 +174,11 @@ def looks_like_item(t):
 
 
 GENERIC_FORM = re.compile(r'^(始解|卍解|常态|归刃|义骸|虚化|暴走|完全体|二阶|一阶|超|改|改版|强化)$')
+# 「角色设计稿：黑崎·一护 半虚 卍解」这类标题自带角色名，是角色标题而不是说明文字。
+# 旧逻辑把它当元信息丢掉，导致紧随其后的整段正文被追加到上一条角色名下
+# （3.8.3 的恋次卍解设计稿就是这样整段进了八千流）。
+DESIGN_DRAFT = re.compile(r'^(?:角色|人物)设计稿\s*[：:]\s*(.+)$')
+DESIGN_GROUP = re.compile(r'^(?:角色|人物)设计稿\s*$')
 
 
 def parse_doc(paras):
@@ -158,6 +187,8 @@ def parse_doc(paras):
     cur_name = None
     last_bold = None
     root_bold = None
+    skip_after = False   # 地图等非角色标题之后，正文不属于任何角色
+    draft_mode = False   # 「角色设计稿」分组之后的内容属于主人物
     has_bold = any(b and t not in SECTION_WORDS for t, b in paras)
     for t, bold in paras:
         if t in SECTION_WORDS or t.rstrip("：:") in SECTION_WORDS:
@@ -167,23 +198,47 @@ def parse_doc(paras):
             cur_name = None
             last_bold = None
             root_bold = None
+            skip_after = False
+            draft_mode = False
+            continue
+        if bold and DESIGN_DRAFT.match(t):
+            nm = DESIGN_DRAFT.match(t).group(1).strip()
+            entries.append({"section": ROLE_MAIN, "name": nm, "items": [], "parent": None, "root": nm})
+            cur_name = entries[-1]
+            last_bold = nm
+            root_bold = nm
+            skip_after = False
+            draft_mode = True      # 设计稿后紧跟的多半还是主人物，直到下一个分组标题
+            continue
+        if bold and DESIGN_GROUP.match(t):
+            cur_name = None
+            last_bold = None
+            root_bold = None
+            draft_mode = True
             continue
         if is_meta(t):
             continue
         if MAP_WORDS.match(t):
-            continue  # map names even if bold
+            # 地图名的后续行是场景改动，不是角色改动：整段丢弃
+            skip_after = True
+            cur_name = None
+            continue
         if bold:
             if NON_CHAR.match(t):  # change-fragment wrongly bolded -> attach to previous char
                 if cur_name is not None:
                     cur_name["items"].append(t)
                 continue
+            skip_after = False
             parent = last_bold
             # root = nearest ancestor that is not itself a generic form word
             if not GENERIC_FORM.match(t.strip().rstrip("：:")):
                 root_bold = t
-            entries.append({"section": cur_section, "name": t, "items": [], "parent": parent, "root": root_bold})
+            sec = ROLE_MAIN if draft_mode else cur_section
+            entries.append({"section": sec, "name": t, "items": [], "parent": parent, "root": root_bold})
             cur_name = entries[-1]
             last_bold = t
+            continue
+        if skip_after:
             continue
         if has_bold:
             if cur_name is not None:
@@ -254,19 +309,29 @@ VERSION_NAME_OVERRIDE = {
     ("3.8.5.8", "黑崎·一护"): "ichigo_zero",
 }
 
+# 文档里的层级笔误：3.8.4 在「恋次」段末多写了「义骸」，这三条是露琪亚义骸的改动
+# （义骸是露琪亚专属形态，恋次没有该形态）。按「版本 + 父级 + 标题」定向修正。
+ENTRY_OVERRIDE = {
+    ("3.8.4", "恋次", "义骸"): "rukia",
+}
+
 # docx
 for ver, files in DOCX_MAP:
     for f in files:
         paras = read_paras(os.path.join(READ, f))
         entries = parse_doc(paras)
         for e in entries:
-            fid = VERSION_NAME_OVERRIDE.get((ver, split_name(e["name"])))
+            role = ROLE_ASSIST if e.get("section") == "辅助" else ROLE_MAIN
+            fid = ENTRY_OVERRIDE.get((ver, split_name(e.get("root") or ""), split_name(e["name"])))
             if fid is None:
-                fid = lookup(e["name"], e.get("root"))
+                fid = VERSION_NAME_OVERRIDE.get((ver, split_name(e["name"])))
+            if fid is not None and role == ROLE_ASSIST and fid not in ASSIST_IDS:
+                fid = ASSIST_FROM_MAIN.get(fid)
+            if fid is None:
+                fid = lookup(e["name"], e.get("root"), role)
             if fid is None and e.get("root"):
                 # form word whose combo failed: fall back to the root character
-                fid = lookup(e["root"])
-            role = ROLE_ASSIST if e.get("section") == "辅助" else ROLE_MAIN
+                fid = lookup(e["root"], None, role)
             if fid is None:
                 unmatched.setdefault(e["name"], []).append(ver)
                 # still keep under raw name
@@ -305,7 +370,7 @@ for ver, sobj in shots.items():
         role = ROLE_ASSIST if g.get("title") == "辅助" else ROLE_MAIN
         for ch in g.get("characters", []):
             raw = ch.get("name", "")
-            fid = lookup(raw)
+            fid = lookup(raw, None, role)
             form = ch.get("form")
             if fid is None:
                 unmatched.setdefault(raw, []).append(ver + "(图)")
@@ -338,11 +403,23 @@ def vsort(v):
 
 # 阵营映射：直接读取游戏 config 的 comic_type（0=死神, 1=火影, -1/缺省=其他）
 CAMP_FROM_CONFIG = {}
+FIGHTER_IDS = set()
 for _fn in ("config/fighter.xml", "config/assist.xml"):
     _s = io.open(os.path.join(SRC, _fn), encoding="utf-8").read()
     for _m in re.finditer(r'<fighter\s+id="([^"]+)"[^>]*?comic_type="(-?\d+)"', _s):
         _fid, _t = _m.group(1), _m.group(2)
         CAMP_FROM_CONFIG[_fid] = {"0": "bleach", "1": "naruto"}.get(_t, "other")
+    if _fn.endswith("fighter.xml"):
+        FIGHTER_IDS = set(re.findall(r'<fighter\s+id="([^"]+)"', _s))
+
+# 防线：辅助卡必须落在 assist.xml 的节点上，主人物卡必须落在 fighter.xml 的节点上。
+# 违反说明某个标题又被解析到了错误的一侧（历史 bug：辅助的蝎生成 sasori::assist）。
+# 个别角色只在 select.xml 里注册（如带二的 trueColors），fighter.xml 只有其 _old 版
+MAIN_ONLY_EXTRA = {"obito_trueColors"}
+bad_assist = [(c["id"], c["name"]) for c in chars.values() if c["isAssist"] and c["baseId"] not in ASSIST_IDS]
+bad_main = [(c["id"], c["name"]) for c in chars.values()
+            if not c["isAssist"] and not c["id"].startswith("RAW::")
+            and c["baseId"] not in FIGHTER_IDS and c["baseId"] not in MAIN_ONLY_EXTRA]
 
 
 def camp_of(fid):
@@ -423,3 +500,7 @@ if form_split_used:
 print("\nUNMATCHED", len(unmatched))
 for n, vs in out["unmatched"][:20]:
     print(" ", n, vs[:3])
+if bad_assist:
+    print("\n!! 辅助卡指向了非辅助节点:", bad_assist)
+if bad_main:
+    print("\n!! 主人物卡指向了非主人物节点:", bad_main)

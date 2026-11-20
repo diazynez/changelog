@@ -20,6 +20,40 @@ fighters = lang["name"]["fighter"]
 assists = lang["name"].get("assist", {})
 # 少数角色有头像与配置但语言文件里只留了旧版名，补上正式显示名
 EXTRA_NAMES = {"obito_trueColors": "宇智波·带土"}
+
+# 辅助位在语言文件里是独立节点（如 hiruko 人傀儡·绯流琥、starrk_resurrection 归刃），
+# 文档里却常用主人物的简称。辅助段落的解析必须落在 assist 节点上，
+# 否则「蝎」「史塔克」会被解析成主人物，凭空生成 sasori::assist 这种错卡。
+ASSIST_FROM_MAIN = {
+    "sasori": "hiruko",                        # 辅助只有人傀儡·绯流琥
+    "starrk": "starrk_resurrection",           # 辅助只有归刃
+    "harribel": "harribel_resurrection",       # 辅助只有归刃
+    "suigetsu": "suigetsu_taka",               # 辅助只有鹰小队
+    "aizen": "aizen_muken",                    # 辅助蓝染即无间封印
+    "aizen_captain": "aizen_muken",            # 「队蓝」辅助，3.8.5 移出后由无间封印接替
+    "sakura": "sakura_byakugo",                # 辅助只有百豪
+}
+
+# 辅助侧的人工简称（语言文件只有全名，文档里常写简称）
+ASSIST_NICK = {
+    "蝎": "hiruko", "绯流琥": "hiruko", "人傀儡·绯流琥": "hiruko",
+    "史塔克": "starrk_resurrection", "柯雅泰·史塔克": "starrk_resurrection",
+    "史塔克 归刃": "starrk_resurrection", "柯雅泰·史塔克 归刃": "starrk_resurrection",
+    "赫利贝尔": "harribel_resurrection", "赫丽贝尔": "harribel_resurrection",
+    "三刃": "harribel_resurrection", "蒂雅·赫丽贝尔": "harribel_resurrection",
+    "赫丽贝尔 归刃": "harribel_resurrection", "蒂雅·赫丽贝尔 归刃": "harribel_resurrection",
+    "水月": "suigetsu_taka", "鬼灯水月": "suigetsu_taka", "鬼灯·水月": "suigetsu_taka",
+    "鬼灯·水月 鹰小队": "suigetsu_taka",
+    "蓝染": "aizen_muken", "蓝染·惣右介": "aizen_muken", "队蓝": "aizen_muken",
+    "蓝染 队长": "aizen_muken", "蓝染·惣右介 无间封印": "aizen_muken",
+    "小樱": "sakura_byakugo", "春野·樱": "sakura_byakugo", "百豪": "sakura_byakugo",
+    "牛头": "ogihci_vasto_lord", "白牛头": "ogihci_vasto_lord", "牛头一护": "ogihci_vasto_lord",
+    "修行": "ichigo_dangai", "最后的月牙天冲": "ichigo_dangai",
+    "八千流": "yachiru", "8600": "yachiru", "草鹿·八千流": "yachiru",
+    "音梦": "nemu", "涅·音梦": "nemu", "妮露": "nel",
+    "一角": "ikkaku_bankai", "斑目·一角 卍解": "ikkaku_bankai",
+    "深作": "fukasaku", "志麻": "fukasaku", "深作仙人&志麻仙人": "fukasaku",
+}
 def official(fid):
     if fid in EXTRA_NAMES:
         return EXTRA_NAMES[fid]
@@ -40,6 +74,7 @@ ALIASES = {
     # 旧称「零段」，改名后与一护包的基础形态同叫「黑崎·一护」，必须分开。
     "零段一护":"ichigo_zero","零段":"ichigo_zero",
     "半虚":"ichigo_half_mask","黑崎·一护 虚化暴走":"ichigo_half_mask","白牛头":"ogihci_vasto_lord",
+    "黑崎·一护 半虚":"ichigo_half_mask","黑崎·一护 半虚 卍解":"ichigo_hmb","黑崎·一护 半卍":"ichigo_hmb",
     # 内虚 = 白一护的旧称（旧文档里 内虚 下挂 始虚/卍虚/始解/卍解）
     "内虚":"ogihci","内虚 始解":"ogihci","内虚始解":"ogihci",
     "内虚 卍解":"ogihci_bankai","内虚卍解":"ogihci_bankai",
@@ -48,6 +83,9 @@ ALIASES = {
     "虚化":"ichigo_vizard","虚化卍解":"ichigo_vizard","虚化 卍解":"ichigo_vizard",
     "半虚":"ichigo_half_mask","虚化暴走":"ichigo_half_mask","虚化暴走 卍解":"ichigo_hmb",
     "天锁":"tensa","天锁斩月":"tensa","真正的天锁斩月":"ichigo_true_bankai",
+    # 天锁斩月 = tensa 本体；带「灭却师之力」的才是它，带「死神之力」的是白·一护 卍解
+    "天锁斩月 灭却师之力":"tensa","天锁斩月灭却师之力":"tensa",
+    "天锁斩月 死神之力":"ogihci_bankai","天锁斩月死神之力":"ogihci_bankai",
     "卍虚":"ogihci_bankai","白·一护 卍解":"ogihci_bankai",
     "始虚":"ogihci","白一护":"ogihci","白·一护":"ogihci",
     "完全虚化":"ichigo_vasto_lord","黑崎·一护 完全虚化":"ichigo_vasto_lord",
@@ -160,7 +198,10 @@ ALIASES = {
     "牛头":"ogihci_vasto_lord","牛头一护":"ogihci_vasto_lord",
     "一尾":"naruto_ver1","四尾":"naruto_ver2",
     "新辅助深作&志麻（蛤蟆夫妇）":"fukasaku","深作":"fukasaku","志麻":"fukasaku",
-    "斩月 死神之力":"zangetsu","斩月":"zangetsu","斩月死神之力":"zangetsu",
+    # 「斩月 死神之力」在历史文档里指白·一护（死神之力的具现），不是主人物「斩月」
+    "斩月 死神之力":"ogihci","斩月死神之力":"ogihci",
+    # 裸「斩月」= 语言文件里的独立角色 zangetsu，待用户确认（文档中暂未出现该写法）
+    "斩月":"zangetsu",
 }
 
 # remove duplicate-key accidents by normalizing at build time
@@ -179,9 +220,27 @@ canon = [{"id": fid, "name": official(fid), "avatar": fid} for fid in used]
 # 部分角色（如 kon=魂、shishio=志志雄真实）只存在于 assist 节点，
 # 若只遍历 fighters，这些 ID 会在网页上直接显示成原始 ID。
 all_ids = set(fighters) | set(assists) | set(EXTRA_NAMES)
-out = {"canon": canon, "alias2id": alias_norm, "official": {fid: official(fid) for fid in all_ids}}
+
+# ---- 辅助侧别名表 ----
+# 辅助段落的解析必须落在 assist.xml 的节点上（辅助位与主人物位的角色并不一一对应）。
+import re as _re
+_assist_xml = io.open(os.path.join(SRC, "config", "assist.xml"), encoding="utf-8").read()
+assist_ids = _re.findall(r'<fighter\s+id="([^"]+)"', _assist_xml)
+assist_map = {}
+for nid, v in assists.items():
+    if nid.startswith("//"):
+        continue
+    nm = v["name"] if isinstance(v, dict) else v
+    assist_map[norm(nm)] = nid
+    assist_map[norm(nid)] = nid
+for a, fid in ASSIST_NICK.items():
+    assist_map[norm(a)] = fid
+
+out = {"canon": canon, "alias2id": alias_norm, "official": {fid: official(fid) for fid in all_ids},
+       "assist2id": assist_map, "assistFromMain": ASSIST_FROM_MAIN,
+       "assistIds": sorted(set(assist_ids))}
 json.dump(out, io.open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-print("canon ids:", len(canon), "aliases:", len(alias_norm))
+print("canon ids:", len(canon), "aliases:", len(alias_norm), "assist aliases:", len(assist_map))
 # show any aliases pointing to missing face files
 missing = [c for c in canon if not os.path.exists(os.path.join(ROOT, "face", c["avatar"] + ".png"))]
 print("canon missing face:", [(c["id"], c["name"]) for c in missing])

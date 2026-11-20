@@ -5,7 +5,7 @@
 
 - 站点：`index.html`（Vue 3，**运行时库已内置于 `assets/vendor/`，无任何外部请求**）
 - 数据：`data/changelog.js`（构建产物）
-- 当前规模：135 个角色 / 形态、2235 条改动、33 个版本、30 个查证到的发布日
+- 当前规模：128 个角色 / 形态、2230 条改动、33 个版本、30 个查证到的发布日
 
 ---
 
@@ -88,6 +88,8 @@ python tools/build.py          # sources/ + tools/data/ → data/changelog.{json
 | 补一个版本的发布日 | `tools/data/release_dates.json`：`"3.8.5.10": {"date": "2025-06-XX", "confidence": "high", "source": "B站补丁发布动态"}` |
 | 版本存在但暂无资料 | 保留在 `VERSION_ORDER` 中，并写进 `PENDING_VERSIONS`，页面会显示「待补充 / 暂无改动记录」 |
 | 角色别名归并错了 | `tools/build_alias.py` 里的 `ALIASES` 字典 |
+| 辅助位角色对不上 | 辅助段落的解析必须落在 `config/assist.xml` 的节点上（如辅助蝎=人傀儡·绯流琥、辅助史塔克=归刃）。简称写进 `build_alias.py` 的 `ASSIST_NICK`，主辅不对应关系写进 `ASSIST_FROM_MAIN`；`build.py` 末尾会校验并报警 |
+| 文档标题写错角色 / 层级 | 在 `build.py` 的 `ENTRY_OVERRIDE` 里按「版本+父级+标题」定向修正 |
 | 角色不属于任何阵营或归错 | 由 `sources/config/*.xml` 的 `comic_type` 决定（0=死神 / 1=火影 / 其他），不要手写 |
 
 ### 日期口径
