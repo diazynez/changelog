@@ -91,6 +91,7 @@
         ],
         sortOptions: [
           { k: 'count', label: '按改动条数' },
+          { k: 'recent', label: '按最近改动' },
           { k: 'order', label: '按选人顺序' },
           { k: 'name', label: '按名称' }
         ]
@@ -123,6 +124,13 @@
 
       hasQuery() {
         return this.q.trim().length > 0;
+      },
+
+      /** 版本名 → 新旧名次（0 = 最新）。versions 已按新→旧排好 */
+      verRank() {
+        const m = {};
+        this.versions.forEach((v, i) => { m[v] = i; });
+        return m;
       },
 
       filteredChars() {
@@ -216,11 +224,32 @@
         return t.toLowerCase().indexOf(q) !== -1;
       },
 
+      /** 该角色最近一次有改动的版本（按版本号新旧判定，非字符串比较） */
+      latestVer(c) {
+        const rank = this.verRank;
+        let best = null, bi = Infinity;
+        for (const v in c.versions) {
+          const i = rank[v];
+          if (i != null && i < bi) { bi = i; best = v; }
+        }
+        return best;
+      },
+
       /** 排序：无论怎么排，辅助始终沉底到角色之后 */
       sortChars(list) {
         const by = this.sortBy;
         const nameOf = (c) => c.nameBase || c.name;
         const ord = (c) => (c.order == null ? 999 : c.order); // 注意 0 是合法序号，不能用 || 兜底
+        const rank = this.verRank;
+        // 最近改动：取最新版本的新旧名次，越小越近；无改动记录者排到最后
+        const recent = (c) => {
+          let best = Infinity;
+          for (const v in c.versions) {
+            const i = rank[v];
+            if (i != null && i < best) best = i;
+          }
+          return best;
+        };
         return list.slice().sort((a, b) => {
           if (a.isAssist !== b.isAssist) return a.isAssist ? 1 : -1;
           if (by === 'order') {
@@ -229,6 +258,10 @@
           }
           if (by === 'name') {
             return nameOf(a).localeCompare(nameOf(b), 'zh-Hans-CN') || a.name.localeCompare(b.name, 'zh-Hans-CN');
+          }
+          if (by === 'recent') {
+            const d = recent(a) - recent(b);
+            return d || b.changeCount - a.changeCount || ord(a) - ord(b);
           }
           return b.changeCount - a.changeCount || ord(a) - ord(b);
         });

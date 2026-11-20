@@ -94,7 +94,7 @@ figure{margin:0}
 /* 形态标签徽章：把「黑崎·一护 虚化暴走 卍解」的后两段单独成签，视觉上与主名分离 */
 .ntag{display:inline-block;font-size:9.5px;font-weight:800;line-height:1.5;padding:0 5px;border-radius:4px;background:#eef2ff;color:#3f56b8;border:1px solid #dfe5fb;letter-spacing:.2px;white-space:nowrap}
 .ntag.sm{font-size:9px;padding:0 4px;margin-left:3px}
-.cmeta{display:flex;justify-content:center;gap:8px;margin-top:8px;font-size:10.5px;color:var(--muted)}
+.cmeta{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 8px;margin-top:8px;font-size:10.5px;color:var(--muted)}
 .cmeta b{color:var(--brand);font-weight:800}
 .cmeta.none{color:#aab1bf;font-style:normal}
 

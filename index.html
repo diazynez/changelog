@@ -97,6 +97,7 @@
           <div class="cmeta" v-if="c.changeCount">
             <span>版本 <b>{{ Object.keys(c.versions).length }}</b></span>
             <span>改动 <b>{{ c.changeCount }}</b></span>
+            <span v-if="sortBy === 'recent'">最近 <b>{{ latestVer(c) }}</b></span>
           </div>
           <div class="cmeta none" v-else><span>暂无改动记录</span></div>
         </article>
