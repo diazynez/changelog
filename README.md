@@ -5,7 +5,7 @@
 
 - 站点：`index.html`（Vue 3，**运行时库已内置于 `assets/vendor/`，无任何外部请求**）
 - 数据：`data/changelog.js`（构建产物）
-- 当前规模：135 个角色 / 形态（其中 5 个辅助暂无改动记录，仅保留位置）、2683 条改动、33 个版本、30 个查证到的发布日
+- 当前规模：136 个角色 / 形态（其中 4 个辅助暂无改动记录，仅保留位置）、2724 条改动、33 个版本、30 个查证到的发布日
 
 ### 角色档案页的筛选与排序
 
@@ -54,9 +54,21 @@
         ├── alias_map.json      #   别名 → 角色ID（含人工修正）
         ├── screenshots.json    #   3.8.8 起补丁长图的逐字转录
         ├── docx_shots.json     #   3.8.8 以前各版本 docx 内嵌补丁截图的逐字转录
+        ├── patch_notes.json    #   3.8.0.1~3.8.1.1 等无 docx/长图的小补丁文字转录
         ├── mainlog.json        #   主程序开发日志解析结果
         └── release_dates.json  #   版本发布日与来源
 ```
+
+### 收录口径
+
+- **版本名以游戏内为准**：`3.8并阶改动.docx` 对应的是 **3.8.0**（不是「3.8」），
+  构建时按 `VERSION_ORDER` 里的 `3.8.0` 归集，否则数据会挂在不存在的版本名下、前端版本列表里看不到。
+- **不收录的条目**：
+  - `游戏主程序BUG修复*n` 等主程序改动（属引擎层，另有「主程序日志」页）；
+  - `旧XX文件包删除用不到的段数` 一类资源打包瘦身；
+  - 带 `[真厉害]` 前缀的改动——那是「真厉害」改版的专属内容，角色（死门凯 / 幽香 / 孙悟空）不在 BVN 名单里。
+- **3.8.0.1 / 3.8.0.2 / 3.8.0.3 / 3.8.1.1** 没有 docx 也没有补丁长图，内容来自官方补丁调整文字截图，
+  逐条转录在 `patch_notes.json`，按角色 / 辅助归属后并入对应卡片。
 
 ### 关于原始资料与依赖
 
@@ -97,6 +109,7 @@ python tools/build.py          # sources/ + tools/data/ → data/changelog.{json
 | 要做什么 | 改哪里 |
 |---|---|
 | 新增一个版本的改动 | 把 docx 放进 `sources/readme/`，在 `tools/build.py` 的 `DOCX_MAP` 加一行，并在 `VERSION_ORDER` 里加上版本号 |
+| 只有补丁文字截图、没有 docx / 长图 | 在 `tools/data/patch_notes.json` 里按「版本 → 分组 → 角色 → 条目」转录，构建会自动并入（`screenshots.json` / `docx_shots.json` 同结构） |
 | 补一个版本的发布日 | `tools/data/release_dates.json`：`"3.8.5.10": {"date": "2025-06-XX", "confidence": "high", "source": "B站补丁发布动态"}` |
 | 版本存在但暂无资料 | 保留在 `VERSION_ORDER` 中，并写进 `PENDING_VERSIONS`，页面会显示「待补充 / 暂无改动记录」 |
 | 角色别名归并错了 | `tools/build_alias.py` 里的 `ALIASES` 字典 |

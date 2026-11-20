@@ -123,7 +123,9 @@ DOCX_MAP = [
     ("3.8.3", ["历史留档/3.8.3并阶改动.docx"]),
     ("3.8.2", ["历史留档/3.8.2并阶改动.docx"]),
     ("3.8.1", ["历史留档/3.8.1并阶改动.docx"]),
-    ("3.8", ["历史留档/3.8并阶改动.docx"]),
+    # 注意：文件名是「3.8并阶改动」，但版本号在游戏里叫 3.8.0（VERSION_ORDER 里也是 3.8.0），
+    # 写成 "3.8" 会让这 109 条挂在无效版本名上，前端版本列表里看不到。
+    ("3.8.0", ["历史留档/3.8并阶改动.docx"]),
 ]
 SECTION_WORDS = {"主人物", "人物", "辅助", "系统级改动", "主程序改动", "人物：", "辅助：", "主人物：", "系统级改动："}
 SKILL_TOKEN = re.compile(r'^(adj|adu|ad|kj|sj|wj|ku|su|wu|ki|wi|si|j|u|i|k|o|l|ksj|kwj|ksu|kwu|s)\b|^[adjkuwiso]{1,4}\s*[:：]', re.I)
@@ -376,8 +378,9 @@ FORM_SPLIT = {
 form_split_used = {}
 
 # 补丁长图：screenshots.json 为 3.8.8 起的补丁长图转录，
-# docx_shots.json 为 3.8.8 以前各版本 docx 里内嵌的补丁截图转录。
-for _src in ("screenshots.json", "docx_shots.json"):
+# docx_shots.json 为 3.8.8 以前各版本 docx 里内嵌的补丁截图转录，
+# patch_notes.json 为没有 docx/长图的早期小补丁（3.8.0.x / 3.8.1.1）手工转录。
+for _src in ("screenshots.json", "docx_shots.json", "patch_notes.json"):
     shots = json.load(open(os.path.join(TOOLDATA, _src), encoding="utf-8"))
     for ver, sobj in shots.items():
         for g in sobj.get("groups", []):
