@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>死神VS火影 竞技版 · 角色改动档案</title>
+<meta name="description" content="以角色为核心的死神VS火影竞技版版本改动档案：按角色聚合所有历史调整，附版本发布日与主程序开发日志。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div id="app" v-cloak>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="dot"></span> CHARACTER CHANGE ARCHIVE</div>
+      <h1>死神VS火影 <span class="hl">竞技版</span></h1>
+      <div class="sub">角 色 改 动 档 案</div>
+      <p class="desc">以角色为核心的版本改动档案。数据取自各版本更新 / 并阶改动文档与官方补丁长图，按角色聚合所有历史调整；发布日以官方渠道为准，主程序开发日志作为补充。截图内容已转录为文字。</p>
+      <div class="stats">
+        <div class="stat" v-for="s in heroStats" :key="s[1]"><b>{{ s[0] }}</b><span>{{ s[1] }}</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== TOPBAR ===== -->
+  <div class="topbar">
+    <div class="topbar-in">
+      <nav class="tabs">
+        <div class="tab" v-for="t in tabs" :key="t.k" :class="{ on: view === t.k }" @click="view = t.k">{{ t.label }}</div>
+      </nav>
+
+      <div class="toolrow" v-show="view !== 'supp'">
+        <div class="search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input v-model="q" type="search" placeholder="搜索角色名 / 别名 / 改动内容…" autocomplete="off">
+        </div>
+
+        <div class="filters2">
+          <div class="fgroup">
+            <span class="flabel">阵营</span>
+            <div class="chips">
+              <button class="chip" v-for="c in campChips" :key="c.k" :class="{ on: camp === c.k }" @click="camp = c.k">{{ c.label }}</button>
+            </div>
+          </div>
+          <div class="fgroup">
+            <span class="flabel">类型</span>
+            <div class="chips">
+              <button class="chip" v-for="c in typeChips" :key="c.k" :class="{ on: type === c.k }" @click="type = c.k">{{ c.label }}</button>
+            </div>
+          </div>
+        </div>
+
+        <select class="sel" v-model="ver" aria-label="按版本筛选">
+          <option value="all">全部版本</option>
+          <option v-for="v in versions" :key="v" :value="v">{{ v }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ===== 角色档案 ===== -->
+    <section v-show="view === 'chars'">
+      <div class="note-box" v-html="dateNote"></div>
+
+      <div class="sec-head">
+        <span class="kick"></span><h2>角色一览</h2><span class="en">CHARACTERS</span>
+        <span class="cnt">显示 {{ filteredChars.length }} / {{ all.length }}</span>
+      </div>
+
+      <div class="char-grid">
+        <article class="ccard" v-for="c in filteredChars" :key="c.id" @click="open(c)" tabindex="0" @keydown.enter="open(c)">
+          <span class="badge" :class="c.camp">{{ campLabel(c.camp) }}</span>
+          <span v-if="c.isAssist" class="badge assist">辅助</span>
+          <img v-if="c.avatar && !broken[c.id]" class="avatar" :src="'face/' + c.avatar + '.png'" :alt="c.name" loading="lazy" @error="broken[c.id] = 1">
+          <div v-else class="avatar ph">{{ c.name.charAt(0) }}</div>
+          <div class="cname" v-html="hl(c.name)"></div>
+          <div class="cmeta">
+            <span>版本 <b>{{ Object.keys(c.versions).length }}</b></span>
+            <span>改动 <b>{{ c.changeCount }}</b></span>
+          </div>
+        </article>
+      </div>
+
+      <div class="empty" v-if="!filteredChars.length">没有匹配的角色，试试其他关键词或筛选。</div>
+
+      <div class="unmatched-box" v-if="unmatched.length">
+        <h4>⚠ 待确认的别名 / 形态（{{ unmatched.length }} 项，未能自动归到具名角色）</h4>
+        <div class="u-hint">这些写法在原始文档中出现，但无法确定对应的正式角色或头像。多为形态名、旧别名或非角色条目。</div>
+        <span class="u-item" v-for="u in unmatched" :key="u[0]" :title="'出现于 ' + u[1].join('、')">{{ u[0] }}</span>
+      </div>
+    </section>
+
+    <!-- ===== 按版本 ===== -->
+    <section v-show="view === 'versions'">
+      <div class="note-box">按版本浏览：每个版本列出了所有有改动记录的角色。发布时间以官方渠道查证为准；<b>标注「提交日」的版本表示未查到确切发布日</b>，日期取自主程序开发日志的最后提交时间，仅供参考。点击角色可查看详情。</div>
+
+      <div class="sec-head">
+        <span class="kick"></span><h2>版本列表</h2><span class="en">VERSIONS</span>
+        <span class="cnt">
+          <label class="chk"><input type="checkbox" v-model="hideEmpty"> 隐藏无记录版本</label>
+        </span>
+      </div>
+
+      <div class="vlist">
+        <div class="vblock" v-for="g in groups" :key="g.v" :class="{ open: openVer === g.v }">
+          <div class="vb-head" @click="openVer = openVer === g.v ? null : g.v">
+            <span class="vb-ver">V {{ g.v }}</span>
+            <span class="vb-date" v-if="g.rel.logDate || g.rel.releaseDate">日志 {{ g.rel.logDate || g.rel.releaseDate }}</span>
+            <span v-if="g.rel.releaseDate" class="vb-rel">发布 {{ g.rel.releaseDate }}</span>
+            <span v-else class="vb-rel none">发布日未定</span>
+            <span v-if="g.rel.note && g.rel.releaseDate" class="vb-note" :title="g.rel.note">有来源</span>
+            <span v-if="g.pending" class="vb-note">待补充</span>
+            <span class="vb-cnt">{{ g.chars.length }} 个角色 · {{ g.count }} 条改动</span>
+          </div>
+
+          <div class="vb-body" v-if="openVer === g.v">
+            <div class="vb-src" v-if="g.rel.releaseDate && g.rel.source">来源：{{ g.rel.source }}</div>
+            <div class="vb-src" v-if="g.pendingNote">{{ g.pendingNote }}</div>
+            <div class="vb-chars" v-if="g.chars.length">
+              <div class="vbc" v-for="c in g.chars" :key="c.id" @click="open(c)">
+                <img v-if="c.avatar" :src="'face/' + c.avatar + '.png'" :alt="c.name" loading="lazy" @error="$event.target.style.visibility = 'hidden'">
+                <div v-else class="x">◌</div>
+                <div>
+                  <div class="nm">{{ c.name }}<span class="vrole" :class="{ main: !c.isAssist }">{{ c.isAssist ? '辅助' : '主人物' }}</span></div>
+                  <div class="it">{{ previewText(c, g.v) }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="vb-empty" v-else>该版本暂无改动记录。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 主程序日志 ===== -->
+    <section v-show="view === 'supp'">
+      <div class="note-box">以下内容是<b>主程序开发日志</b>的原始记录（引擎 / 系统 / UI / 插件层面的更新）。日志里的日期是<b>最后提交代码的时间</b>，并非版本发布时间——真实发布日期见「角色档案」页顶部说明与「按版本」页。这里作为补充说明保留。</div>
+
+      <div class="sec-head"><span class="kick"></span><h2>主程序开发日志</h2><span class="en">ENGINE LOG</span></div>
+      <div class="ml-block" v-for="(m, i) in mainlog" :key="m.version" :class="{ open: openLog === m.version }">
+        <div class="ml-head" @click="openLog = openLog === m.version ? null : m.version">
+          <span class="v">V {{ m.version }}</span>
+          <span class="d">{{ m.date }}</span>
+          <span class="dt" v-if="m.verRange">ver {{ m.verRange }}</span>
+          <span class="c">{{ logCount(m) }} 条</span>
+        </div>
+        <div class="ml-body" v-if="openLog === m.version">
+          <template v-for="(items, key) in (m.sections || {})" :key="key">
+            <div class="ml-sec" v-if="items && items.length">
+              <div class="t">{{ secLabel(key) }}</div>
+              <ul><li v-for="(x, j) in items" :key="j">{{ x }}</li></ul>
+            </div>
+          </template>
+          <div class="ml-empty" v-if="!logCount(m)">（该版本主程序无改动记录）</div>
+        </div>
+      </div>
+
+      <div class="sec-head" style="margin-top:44px">
+        <span class="kick"></span><h2>补丁调整截图</h2><span class="en">SOURCE SCREENSHOTS</span>
+        <span class="cnt">原图 · 内容已转录进角色档案</span>
+      </div>
+      <div class="screens">
+        <figure class="screen" v-for="im in images" :key="im.path" @click="zoom = im">
+          <img :src="im.path" :alt="im.title" loading="lazy">
+          <figcaption class="c">{{ im.version }} 补丁调整</figcaption>
+        </figure>
+      </div>
+
+      <div class="sec-head" style="margin-top:44px">
+        <span class="kick"></span><h2>官方俗称表参考</h2><span class="en">NICKNAME CHART</span>
+        <span class="cnt">别名归并依据</span>
+      </div>
+      <div class="screens" id="refs">
+        <figure class="screen" v-for="im in refImages" :key="im.path" @click="zoom = im">
+          <img :src="im.path" :alt="im.title" loading="lazy">
+          <figcaption class="c">{{ im.title }}</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== 详情抽屉 ===== -->
+  <div class="overlay" :class="{ show: !!selected }" @click="selected = null"></div>
+  <aside class="drawer" :class="{ show: !!selected }" v-if="selected" role="dialog" aria-modal="true">
+    <div class="dhead">
+      <button class="close" @click="selected = null" aria-label="关闭">×</button>
+      <div class="dtitle">
+        <img v-if="selected.avatar && !broken[selected.id]" class="avatar" :src="'face/' + selected.avatar + '.png'" :alt="selected.name" @error="broken[selected.id] = 1">
+        <div v-else class="avatar ph">{{ selected.name.charAt(0) }}</div>
+        <div>
+          <h3>{{ selected.name }}</h3>
+          <div class="dtags">
+            <span class="dt" :class="selected.camp">{{ campLabel(selected.camp) }}</span>
+            <span class="dt" :class="{ assist: selected.isAssist }">{{ selected.isAssist ? '辅助' : '主人物' }}</span>
+            <span class="dt">ID: {{ selected.id }}</span>
+            <span class="dt">涉及 {{ Object.keys(selected.versions).length }} 个版本</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dbody">
+      <div class="vgroup" v-for="v in Object.keys(selected.versions)" :key="v" :class="{ closed: closedGroups[selected.id + v] }">
+        <div class="vg-head" @click="closedGroups[selected.id + v] = !closedGroups[selected.id + v]">
+          <span class="vv">V {{ v }}</span>
+          <span class="vd" v-if="rel[v] && rel[v].logDate">{{ rel[v].logDate }}</span>
+          <span v-if="rel[v] && rel[v].releaseDate" class="vrel">发布 {{ rel[v].releaseDate }}</span>
+          <span v-else class="vrel none">提交日</span>
+          <span class="vsub">{{ selected.versions[v].length }} 条</span>
+          <span class="caret">▾</span>
+        </div>
+        <ul class="vg-items">
+          <li v-for="(it, i) in selected.versions[v]" :key="i">
+            <span v-if="itemParts(it).form" class="form">〔{{ itemParts(it).form }}〕</span>{{ itemParts(it).text }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== 图片灯箱 ===== -->
+  <div class="lightbox" :class="{ show: !!zoom }" @click.self="zoom = null">
+    <button class="x" @click="zoom = null" aria-label="关闭">×</button>
+    <img v-if="zoom" :src="zoom.path" :alt="zoom.title">
+  </div>
+
+  <footer class="foot">
+    <div>{{ footerText }}</div>
+  </footer>
+</div>
+
+<script src="assets/vendor/vue.global.prod.min.js"></script>
+<script src="data/changelog.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

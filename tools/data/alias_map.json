@@ -1,0 +1,1190 @@
+{
+ "canon": [
+  {
+   "id": "aizen",
+   "name": "蓝染·惣右介",
+   "avatar": "aizen"
+  },
+  {
+   "id": "aizen_captain",
+   "name": "蓝染·惣右介 队长",
+   "avatar": "aizen_captain"
+  },
+  {
+   "id": "aizen_muken",
+   "name": "蓝染·惣右介 无间封印",
+   "avatar": "aizen_muken"
+  },
+  {
+   "id": "bonnie",
+   "name": "波妮",
+   "avatar": "bonnie"
+  },
+  {
+   "id": "byakuya",
+   "name": "朽木·白哉",
+   "avatar": "byakuya"
+  },
+  {
+   "id": "byakuya_bankai",
+   "name": "朽木·白哉 卍解",
+   "avatar": "byakuya_bankai"
+  },
+  {
+   "id": "chad",
+   "name": "茶渡·泰虎",
+   "avatar": "chad"
+  },
+  {
+   "id": "choji",
+   "name": "秋道·丁次",
+   "avatar": "choji"
+  },
+  {
+   "id": "deidara",
+   "name": "迪达拉",
+   "avatar": "deidara"
+  },
+  {
+   "id": "dordoni",
+   "name": "多鲁多尼·亚历山卓戴尔·索卡奇欧",
+   "avatar": "dordoni"
+  },
+  {
+   "id": "fukasaku",
+   "name": "深作仙人&志麻仙人",
+   "avatar": "fukasaku"
+  },
+  {
+   "id": "gaara",
+   "name": "我爱罗",
+   "avatar": "gaara"
+  },
+  {
+   "id": "gin",
+   "name": "市丸·银",
+   "avatar": "gin"
+  },
+  {
+   "id": "gin_bankai",
+   "name": "市丸·银 卍解",
+   "avatar": "gin_bankai"
+  },
+  {
+   "id": "grimmjow",
+   "name": "葛力姆乔·贾卡杰克",
+   "avatar": "grimmjow"
+  },
+  {
+   "id": "guy",
+   "name": "迈特·凯",
+   "avatar": "guy"
+  },
+  {
+   "id": "harribel",
+   "name": "蒂雅·赫丽贝尔",
+   "avatar": "harribel"
+  },
+  {
+   "id": "harribel_resurrection",
+   "name": "蒂雅·赫丽贝尔 归刃",
+   "avatar": "harribel_resurrection"
+  },
+  {
+   "id": "hinata",
+   "name": "日向·雏田",
+   "avatar": "hinata"
+  },
+  {
+   "id": "hirako",
+   "name": "平子·真子",
+   "avatar": "hirako"
+  },
+  {
+   "id": "hiruko",
+   "name": "人傀儡·绯流琥",
+   "avatar": "hiruko"
+  },
+  {
+   "id": "hiyori",
+   "name": "猿柿·日世里",
+   "avatar": "hiyori"
+  },
+  {
+   "id": "ichigo",
+   "name": "黑崎·一护 始解",
+   "avatar": "ichigo"
+  },
+  {
+   "id": "ichigo_bankai",
+   "name": "黑崎·一护 卍解",
+   "avatar": "ichigo_bankai"
+  },
+  {
+   "id": "ichigo_dangai",
+   "name": "黑崎·一护 最后的月牙天冲",
+   "avatar": "ichigo_dangai"
+  },
+  {
+   "id": "ichigo_half_mask",
+   "name": "黑崎·一护 虚化暴走",
+   "avatar": "ichigo_half_mask"
+  },
+  {
+   "id": "ichigo_hmb",
+   "name": "黑崎·一护 虚化暴走 卍解",
+   "avatar": "ichigo_hmb"
+  },
+  {
+   "id": "ichigo_true_bankai",
+   "name": "黑崎·一护 真正的天锁斩月",
+   "avatar": "ichigo_true_bankai"
+  },
+  {
+   "id": "ichigo_vasto_lord",
+   "name": "黑崎·一护 完全虚化",
+   "avatar": "ichigo_vasto_lord"
+  },
+  {
+   "id": "ichigo_vizard",
+   "name": "黑崎·一护 虚化 卍解",
+   "avatar": "ichigo_vizard"
+  },
+  {
+   "id": "ichigo_zero",
+   "name": "黑崎·一护",
+   "avatar": "ichigo_zero"
+  },
+  {
+   "id": "ikkaku",
+   "name": "斑目·一角",
+   "avatar": "ikkaku"
+  },
+  {
+   "id": "ino",
+   "name": "山中·井野",
+   "avatar": "ino"
+  },
+  {
+   "id": "isane",
+   "name": "虎彻·勇音",
+   "avatar": "isane"
+  },
+  {
+   "id": "itachi",
+   "name": "宇智波·鼬",
+   "avatar": "itachi"
+  },
+  {
+   "id": "jiraiya",
+   "name": "自来也",
+   "avatar": "jiraiya"
+  },
+  {
+   "id": "juggo",
+   "name": "重吾",
+   "avatar": "juggo"
+  },
+  {
+   "id": "kabuto",
+   "name": "药师·兜",
+   "avatar": "kabuto"
+  },
+  {
+   "id": "kakashi",
+   "name": "旗木·卡卡西",
+   "avatar": "kakashi"
+  },
+  {
+   "id": "kakashi_gsw",
+   "name": "旗木·卡卡西 忍界大战",
+   "avatar": "kakashi_gsw"
+  },
+  {
+   "id": "kakashi_kamui",
+   "name": "旗木·卡卡西 神威",
+   "avatar": "kakashi_kamui"
+  },
+  {
+   "id": "karin",
+   "name": "香燐",
+   "avatar": "karin"
+  },
+  {
+   "id": "kenpachi",
+   "name": "更木·剑八",
+   "avatar": "kenpachi"
+  },
+  {
+   "id": "kensei",
+   "name": "六车·拳西",
+   "avatar": "kensei"
+  },
+  {
+   "id": "kenshin",
+   "name": "绯村·剑心 浪客",
+   "avatar": "kenshin"
+  },
+  {
+   "id": "kenshin_battousai",
+   "name": "绯村·剑心 拔刀斋",
+   "avatar": "kenshin_battousai"
+  },
+  {
+   "id": "killerbee",
+   "name": "奇拉比",
+   "avatar": "killerbee"
+  },
+  {
+   "id": "kimimaro",
+   "name": "君麻吕",
+   "avatar": "kimimaro"
+  },
+  {
+   "id": "kimimaro_goninshu",
+   "name": "君麻吕 音忍五人众",
+   "avatar": "kimimaro_goninshu"
+  },
+  {
+   "id": "kira",
+   "name": "吉良·伊鹤",
+   "avatar": "kira"
+  },
+  {
+   "id": "kisame",
+   "name": "干柿·鬼鲛",
+   "avatar": "kisame"
+  },
+  {
+   "id": "konan",
+   "name": "小南",
+   "avatar": "konan"
+  },
+  {
+   "id": "lee",
+   "name": "李·洛克",
+   "avatar": "lee"
+  },
+  {
+   "id": "lee_tomon",
+   "name": "李·洛克 杜门",
+   "avatar": "lee_tomon"
+  },
+  {
+   "id": "madara",
+   "name": "宇智波·斑",
+   "avatar": "madara"
+  },
+  {
+   "id": "mayuri",
+   "name": "涅·茧利",
+   "avatar": "mayuri"
+  },
+  {
+   "id": "minato",
+   "name": "波风·水门",
+   "avatar": "minato"
+  },
+  {
+   "id": "nagato",
+   "name": "长门",
+   "avatar": "nagato"
+  },
+  {
+   "id": "naruto",
+   "name": "漩涡·鸣人",
+   "avatar": "naruto"
+  },
+  {
+   "id": "naruto_kyubi",
+   "name": "漩涡·鸣人 九尾查克拉模式",
+   "avatar": "naruto_kyubi"
+  },
+  {
+   "id": "naruto_sennin",
+   "name": "漩涡·鸣人 仙人模式",
+   "avatar": "naruto_sennin"
+  },
+  {
+   "id": "naruto_ver1",
+   "name": "漩涡·鸣人 尾兽外衣",
+   "avatar": "naruto_ver1"
+  },
+  {
+   "id": "naruto_ver2",
+   "name": "漩涡·鸣人 尾兽化暴走",
+   "avatar": "naruto_ver2"
+  },
+  {
+   "id": "neji",
+   "name": "日向·宁次",
+   "avatar": "neji"
+  },
+  {
+   "id": "nel",
+   "name": "妮露",
+   "avatar": "nel"
+  },
+  {
+   "id": "nelliel",
+   "name": "妮莉艾露·杜·欧德修凡克",
+   "avatar": "nelliel"
+  },
+  {
+   "id": "nemu",
+   "name": "涅·音梦",
+   "avatar": "nemu"
+  },
+  {
+   "id": "nnoitra",
+   "name": "诺伊特拉·吉尔加",
+   "avatar": "nnoitra"
+  },
+  {
+   "id": "obito",
+   "name": "“宇智波·斑”",
+   "avatar": "obito"
+  },
+  {
+   "id": "obito_rikudou",
+   "name": "宇智波·带土 六道仙人",
+   "avatar": "obito_rikudou"
+  },
+  {
+   "id": "obito_trueColors",
+   "name": "宇智波·带土",
+   "avatar": "obito_trueColors"
+  },
+  {
+   "id": "ogihci",
+   "name": "白·一护",
+   "avatar": "ogihci"
+  },
+  {
+   "id": "ogihci_bankai",
+   "name": "白·一护 卍解",
+   "avatar": "ogihci_bankai"
+  },
+  {
+   "id": "ogihci_vasto_lord",
+   "name": "白·一护 完全虚化",
+   "avatar": "ogihci_vasto_lord"
+  },
+  {
+   "id": "onoki",
+   "name": "大野木",
+   "avatar": "onoki"
+  },
+  {
+   "id": "orihime",
+   "name": "井上·织姬",
+   "avatar": "orihime"
+  },
+  {
+   "id": "orochimaru",
+   "name": "大蛇丸",
+   "avatar": "orochimaru"
+  },
+  {
+   "id": "pain",
+   "name": "佩恩 六道",
+   "avatar": "pain"
+  },
+  {
+   "id": "pain_tendo",
+   "name": "佩恩 天道",
+   "avatar": "pain_tendo"
+  },
+  {
+   "id": "rangiku",
+   "name": "松本·乱菊",
+   "avatar": "rangiku"
+  },
+  {
+   "id": "renji",
+   "name": "阿散井·恋次",
+   "avatar": "renji"
+  },
+  {
+   "id": "renji_bankai",
+   "name": "阿散井·恋次 卍解",
+   "avatar": "renji_bankai"
+  },
+  {
+   "id": "riruka",
+   "name": "毒峰·莉露卡",
+   "avatar": "riruka"
+  },
+  {
+   "id": "rukia",
+   "name": "朽木·露琪亚 义骸",
+   "avatar": "rukia"
+  },
+  {
+   "id": "rukia_shikai",
+   "name": "朽木·露琪亚 始解",
+   "avatar": "rukia_shikai"
+  },
+  {
+   "id": "sado_muerte",
+   "name": "茶渡·泰虎 魔人",
+   "avatar": "sado_muerte"
+  },
+  {
+   "id": "sai",
+   "name": "佐井",
+   "avatar": "sai"
+  },
+  {
+   "id": "sakura",
+   "name": "春野·樱",
+   "avatar": "sakura"
+  },
+  {
+   "id": "sakura_byakugo",
+   "name": "春野·樱 百豪",
+   "avatar": "sakura_byakugo"
+  },
+  {
+   "id": "sasori",
+   "name": "蝎",
+   "avatar": "sasori"
+  },
+  {
+   "id": "sasuke",
+   "name": "宇智波·佐助",
+   "avatar": "sasuke"
+  },
+  {
+   "id": "sasuke_amenotejikara",
+   "name": "宇智波·佐助 天手力",
+   "avatar": "sasuke_amenotejikara"
+  },
+  {
+   "id": "sasuke_juin",
+   "name": "宇智波·佐助 咒印",
+   "avatar": "sasuke_juin"
+  },
+  {
+   "id": "sasuke_susanoo",
+   "name": "宇智波·佐助 须佐能乎",
+   "avatar": "sasuke_susanoo"
+  },
+  {
+   "id": "sasuke_taka",
+   "name": "宇智波·佐助 鹰小队",
+   "avatar": "sasuke_taka"
+  },
+  {
+   "id": "shikamaru",
+   "name": "奈良·鹿丸",
+   "avatar": "shikamaru"
+  },
+  {
+   "id": "shishio",
+   "name": "志志雄·真实",
+   "avatar": "shishio"
+  },
+  {
+   "id": "shunsui",
+   "name": "京乐·春水",
+   "avatar": "shunsui"
+  },
+  {
+   "id": "soifon",
+   "name": "碎蜂",
+   "avatar": "soifon"
+  },
+  {
+   "id": "starrk",
+   "name": "柯雅泰·史塔克",
+   "avatar": "starrk"
+  },
+  {
+   "id": "starrk_resurrection",
+   "name": "柯雅泰·史塔克 归刃",
+   "avatar": "starrk_resurrection"
+  },
+  {
+   "id": "suigetsu",
+   "name": "鬼灯·水月",
+   "avatar": "suigetsu"
+  },
+  {
+   "id": "szayelaporro",
+   "name": "萨尔阿波罗·格兰兹",
+   "avatar": "szayelaporro"
+  },
+  {
+   "id": "temari",
+   "name": "手鞠",
+   "avatar": "temari"
+  },
+  {
+   "id": "tensa",
+   "name": "天锁斩月",
+   "avatar": "tensa"
+  },
+  {
+   "id": "tenten",
+   "name": "天天",
+   "avatar": "tenten"
+  },
+  {
+   "id": "tobi",
+   "name": "自称阿飞的男人",
+   "avatar": "tobi"
+  },
+  {
+   "id": "toushirou",
+   "name": "日番谷·冬狮郎",
+   "avatar": "toushirou"
+  },
+  {
+   "id": "toushirou_bankai",
+   "name": "日番谷·冬狮郎 卍解",
+   "avatar": "toushirou_bankai"
+  },
+  {
+   "id": "tsunade",
+   "name": "纲手",
+   "avatar": "tsunade"
+  },
+  {
+   "id": "ulquiorra",
+   "name": "乌尔奇奥拉·西法",
+   "avatar": "ulquiorra"
+  },
+  {
+   "id": "ulquiorra_murcielago",
+   "name": "乌尔奇奥拉·西法 归刃",
+   "avatar": "ulquiorra_murcielago"
+  },
+  {
+   "id": "urahara",
+   "name": "浦原·喜助",
+   "avatar": "urahara"
+  },
+  {
+   "id": "uryuu",
+   "name": "石田·雨龙",
+   "avatar": "uryuu"
+  },
+  {
+   "id": "uryuu_ginreigojiaku",
+   "name": "石田·雨龙 银岭弧雀",
+   "avatar": "uryuu_ginreigojiaku"
+  },
+  {
+   "id": "utakata",
+   "name": "泡沫",
+   "avatar": "utakata"
+  },
+  {
+   "id": "yachiru",
+   "name": "草鹿·八千流",
+   "avatar": "yachiru"
+  },
+  {
+   "id": "yamamoto",
+   "name": "山本·元柳斎·重国",
+   "avatar": "yamamoto"
+  },
+  {
+   "id": "yoruichi",
+   "name": "四枫院·夜一",
+   "avatar": "yoruichi"
+  },
+  {
+   "id": "zangetsu",
+   "name": "斩月",
+   "avatar": "zangetsu"
+  },
+  {
+   "id": "zetsu",
+   "name": "绝",
+   "avatar": "zetsu"
+  }
+ ],
+ "alias2id": {
+  "一护": "ichigo",
+  "黑崎一护": "ichigo",
+  "黑崎・一护": "ichigo",
+  "零段一护": "ichigo",
+  "零段": "ichigo",
+  "始护": "ichigo",
+  "黑崎・一护始解": "ichigo",
+  "始解": "ichigo",
+  "半虚": "ichigo_half_mask",
+  "黑崎・一护虚化暴走": "ichigo_half_mask",
+  "内虚": "ichigo_half_mask",
+  "白牛头": "ogihci_vasto_lord",
+  "半卍": "ichigo_hmb",
+  "黑崎・一护虚化暴走卍解": "ichigo_hmb",
+  "卍护": "ichigo_bankai",
+  "一护卍解": "ichigo_bankai",
+  "黑崎・一护卍解": "ichigo_bankai",
+  "虚化": "ichigo_vizard",
+  "虚化卍解": "ichigo_vizard",
+  "虚化暴走": "ichigo_half_mask",
+  "虚化暴走卍解": "ichigo_hmb",
+  "天锁": "tensa",
+  "天锁斩月": "tensa",
+  "真正的天锁斩月": "ichigo_true_bankai",
+  "卍虚": "ogihci_bankai",
+  "白・一护卍解": "ogihci_bankai",
+  "始虚": "ogihci",
+  "白一护": "ogihci",
+  "白・一护": "ogihci",
+  "完全虚化": "ichigo_vasto_lord",
+  "黑崎・一护完全虚化": "ichigo_vasto_lord",
+  "修行": "ichigo_dangai",
+  "最后的月牙天冲": "ichigo_dangai",
+  "黑崎一护-千年血战前篇(二段)": "ichigo_zero",
+  "黑崎一护-血战前篇Ⅱ": "ichigo_zero",
+  "蓝染": "aizen",
+  "蓝剑": "aizen",
+  "崩玉一阶": "aizen",
+  "蓝染・惣右介": "aizen",
+  "队蓝": "aizen_captain",
+  "蓝染队长": "aizen_captain",
+  "蓝染惣右介队长": "aizen_captain",
+  "蓝染・惣右介队长": "aizen_captain",
+  "蓝染无间封印": "aizen_muken",
+  "蓝染惣右介无间封印": "aizen_muken",
+  "蓝染・惣右介无间封印": "aizen_muken",
+  "新增蓝染惣右介无间封印": "aizen_muken",
+  "银": "gin",
+  "市丸银": "gin",
+  "市丸・银": "gin",
+  "市丸・银(调整负责：哈士奇)": "gin",
+  "卍银": "gin_bankai",
+  "市丸・银卍解": "gin_bankai",
+  "市丸银・卍解": "gin_bankai",
+  "新角色市丸・银卍解": "gin_bankai",
+  "市丸银・卍解by:B站昭泽安仁": "gin_bankai",
+  "市丸・银・卍解": "gin_bankai",
+  "白哉": "byakuya",
+  "朽木白哉": "byakuya",
+  "朽木・白哉": "byakuya",
+  "帝白": "byakuya_bankai",
+  "白哉卍解": "byakuya_bankai",
+  "吭景": "byakuya_bankai",
+  "露琪亚": "rukia",
+  "义骸": "rukia",
+  "朽木・露琪亚义骸": "rukia",
+  "露琪亚义骸": "rukia",
+  "始露": "rukia_shikai",
+  "露琪亚始解": "rukia_shikai",
+  "恋次": "renji",
+  "阿散井恋次": "renji",
+  "阿散井・恋次": "renji",
+  "卍恋": "renji_bankai",
+  "恋次卍解": "renji_bankai",
+  "新人物卍解恋次": "renji_bankai",
+  "冬狮郎": "toushirou",
+  "日番谷冬狮郎": "toushirou",
+  "日番谷・冬狮郎": "toushirou",
+  "剑八": "kenpachi",
+  "更木剑八": "kenpachi",
+  "更木・剑八": "kenpachi",
+  "角色重置更木・剑八": "kenpachi",
+  "碎蜂": "soifon",
+  "角色重置碎蜂": "soifon",
+  "8600": "yachiru",
+  "八千流": "yachiru",
+  "草鹿八千流": "yachiru",
+  "草鹿・八千流": "yachiru",
+  "夜一": "yoruichi",
+  "四枫院夜一": "yoruichi",
+  "四枫院・夜一": "yoruichi",
+  "四枫院・夜一(调整负责：diaznez)": "yoruichi",
+  "山本": "yamamoto",
+  "山本元柳斋": "yamamoto",
+  "山本・元柳斎・重国": "yamamoto",
+  "春水": "shunsui",
+  "京乐春水": "shunsui",
+  "京乐・春水": "shunsui",
+  "涅": "mayuri",
+  "涅茧利": "mayuri",
+  "涅・茧利": "mayuri",
+  "涅・茧利(调整负责创意呈现：BVN素材组)": "mayuri",
+  "涅・萤利": "mayuri",
+  "涅・萤利(调整负责创意呈现：BVN素材组)": "mayuri",
+  "剑心": "kenshin",
+  "绯村剑心": "kenshin",
+  "绯村・剑心浪客": "kenshin",
+  "浪客": "kenshin",
+  "拔刀斋": "kenshin_battousai",
+  "绯村・剑心拔刀斋": "kenshin_battousai",
+  "一角": "ikkaku",
+  "斑目一角": "ikkaku",
+  "斑目・一角": "ikkaku",
+  "浦原喜助": "urahara",
+  "浦原・喜助": "urahara",
+  "店长": "urahara",
+  "新辅助浦原喜助": "urahara",
+  "平子": "hirako",
+  "平子・真子": "hirako",
+  "日世里": "hiyori",
+  "猿柿日世里": "hiyori",
+  "吉良": "kira",
+  "吉良伊鹤": "kira",
+  "勇音": "isane",
+  "虎彻勇音": "isane",
+  "新辅助虎彻勇音": "isane",
+  "六车拳西": "kensei",
+  "拳西": "kensei",
+  "新辅助六车拳西": "kensei",
+  "莉露卡": "riruka",
+  "毒峰莉露卡": "riruka",
+  "新辅助毒峰莉露卡": "riruka",
+  "香燐": "karin",
+  "香磷": "karin",
+  "新辅助香燐": "karin",
+  "音梦": "nemu",
+  "涅・音梦": "nemu",
+  "涅・音梦(调整负责创意呈现：BVN素材组)": "nemu",
+  "葛六": "grimmjow",
+  "葛力姆乔": "grimmjow",
+  "葛力姆乔・贾卡杰克": "grimmjow",
+  "葛力姆乔・贾卡杰克(调整负责：油条)": "grimmjow",
+  "自称阿飞的男人": "tobi",
+  "小乌": "ulquiorra",
+  "乌尔奇奥拉": "ulquiorra",
+  "乌尔奇奥拉・西法": "ulquiorra",
+  "大乌": "ulquiorra_murcielago",
+  "乌尔奇奥拉归刃": "ulquiorra_murcielago",
+  "乌尔奇奥拉・西法归刃": "ulquiorra_murcielago",
+  "史塔克": "starrk",
+  "柯雅泰・史塔克": "starrk",
+  "史塔克归刃": "starrk_resurrection",
+  "史塔克・归刃": "starrk_resurrection",
+  "赫利贝尔": "harribel",
+  "赫丽贝尔": "harribel",
+  "赫丽贝尔归刃": "harribel_resurrection",
+  "蒂雅・赫丽贝尔归刃": "harribel_resurrection",
+  "三刃": "harribel_resurrection",
+  "妮露": "nel",
+  "妮莉艾露・杜・欧德修凡克": "nelliel",
+  "妮露・归刃": "nelliel",
+  "多鲁多尼": "dordoni",
+  "萨尔阿波罗": "szayelaporro",
+  "诺伊特拉": "nnoitra",
+  "鸣人": "naruto",
+  "漩涡鸣人": "naruto",
+  "漩涡・鸣人": "naruto",
+  "渣鸣": "naruto",
+  "仙鸣": "naruto_sennin",
+  "仙人": "naruto_sennin",
+  "仙人模式": "naruto_sennin",
+  "漩涡・鸣人仙人模式": "naruto_sennin",
+  "金鸣": "naruto_kyubi",
+  "九尾查克拉": "naruto_kyubi",
+  "九尾查克拉模式": "naruto_kyubi",
+  "鸣人九尾查克拉": "naruto_kyubi",
+  "漩涡・鸣人九尾查克拉模式": "naruto_kyubi",
+  "尾兽外衣": "naruto_ver1",
+  "一尾": "naruto_ver1",
+  "漩涡・鸣人尾兽外衣": "naruto_ver1",
+  "一尾：": "naruto_ver1",
+  "尾兽化暴走": "naruto_ver2",
+  "二尾": "naruto_ver2",
+  "漩涡・鸣人尾兽化暴走": "naruto_ver2",
+  "四尾：": "naruto_ver2",
+  "四尾": "naruto_ver2",
+  "佐助": "sasuke",
+  "宇智波佐助": "sasuke",
+  "宇智波・佐助": "sasuke",
+  "佐助天手力": "sasuke_amenotejikara",
+  "宇智波・佐助天手力": "sasuke_amenotejikara",
+  "咒佐": "sasuke_juin",
+  "渣佐": "sasuke_juin",
+  "咒印佐助": "sasuke_juin",
+  "鹰佐": "sasuke_taka",
+  "鹰小队": "sasuke_taka",
+  "佐助鹰小队": "sasuke_taka",
+  "宇智波・佐助鹰小队": "sasuke_taka",
+  "须佐": "sasuke_susanoo",
+  "须佐能乎": "sasuke_susanoo",
+  "宇智波・佐助须佐能乎": "sasuke_susanoo",
+  "鼬": "itachi",
+  "宇智波鼬": "itachi",
+  "宇智波・鼬": "itachi",
+  "宇智波・鼬(调整负责：diaznez)": "itachi",
+  "斑": "madara",
+  "宇智波斑": "madara",
+  "宇智波・斑": "madara",
+  "“宇智波・斑”": "obito",
+  "带土": "obito",
+  "“宇智波・斑”伊邪那岐": "obito",
+  "带一": "obito",
+  "带二": "obito_trueColors",
+  "宇智波・带土": "obito_trueColors",
+  "obito_trueColors": "obito_trueColors",
+  "六道": "pain",
+  "宇智波・带土六道仙人": "obito_rikudou",
+  "阿飞": "tobi",
+  "水门": "minato",
+  "波风水门": "minato",
+  "波风・水门": "minato",
+  "波风・水门by:Mitsune(御狐)": "minato",
+  "佩恩": "pain",
+  "佩恩六道": "pain",
+  "佩恩・六道": "pain",
+  "天道": "pain_tendo",
+  "佩恩天道": "pain_tendo",
+  "长门": "nagato",
+  "青年长门": "nagato",
+  "青年长门by:黑咲_琉璃": "nagato",
+  "卡卡西": "kakashi",
+  "旗木卡卡西": "kakashi",
+  "旗木・卡卡西": "kakashi",
+  "渣卡": "kakashi",
+  "神卡": "kakashi_kamui",
+  "卡卡西神威": "kakashi_kamui",
+  "旗木・卡卡西神威": "kakashi_kamui",
+  "忍卡": "kakashi_gsw",
+  "忍战卡卡西": "kakashi_gsw",
+  "卡卡西忍界大战": "kakashi_gsw",
+  "旗木・卡卡西忍界大战": "kakashi_gsw",
+  "凯": "guy",
+  "迈特凯": "guy",
+  "迈特・凯": "guy",
+  "李": "lee",
+  "小李": "lee",
+  "李洛克": "lee",
+  "李・洛克": "lee",
+  "杜门": "lee_tomon",
+  "杜李": "lee_tomon",
+  "杜门李": "lee_tomon",
+  "李・洛克杜门": "lee_tomon",
+  "小樱": "sakura",
+  "春野樱": "sakura",
+  "春野・樱": "sakura",
+  "春野・樱(调整负责：油条)": "sakura",
+  "百豪": "sakura_byakugo",
+  "百豪樱": "sakura_byakugo",
+  "春野・樱百豪": "sakura_byakugo",
+  "大蛇丸": "orochimaru",
+  "君麻吕": "kimimaro",
+  "君麻吕：": "kimimaro",
+  "君麻吕音忍五人众": "kimimaro_goninshu",
+  "我爱罗": "gaara",
+  "手鞠": "temari",
+  "迪达拉": "deidara",
+  "小迪": "deidara",
+  "蝎": "sasori",
+  "绯流琥": "hiruko",
+  "人傀儡・绯流琥": "hiruko",
+  "鬼鲛": "kisame",
+  "干柿鬼鲛": "kisame",
+  "自来也": "jiraiya",
+  "纲手": "tsunade",
+  "鹿丸": "shikamaru",
+  "奈良鹿丸": "shikamaru",
+  "雏田": "hinata",
+  "日向雏田": "hinata",
+  "日向・雏田": "hinata",
+  "井野": "ino",
+  "丁次": "choji",
+  "宁次": "neji",
+  "日向宁次": "neji",
+  "天天": "tenten",
+  "佐井": "sai",
+  "重吾": "juggo",
+  "水月": "suigetsu",
+  "鬼灯水月": "suigetsu",
+  "兜": "kabuto",
+  "药师兜": "kabuto",
+  "药师・兜": "kabuto",
+  "绝": "zetsu",
+  "小南": "konan",
+  "大野木": "onoki",
+  "土影": "onoki",
+  "奇拉比": "killerbee",
+  "羽高": "utakata",
+  "志志雄": "shishio",
+  "志志雄真实": "shishio",
+  "波妮": "bonnie",
+  "雨龙": "uryuu",
+  "石田雨龙": "uryuu",
+  "石田・雨龙": "uryuu",
+  "雨龙银岭弧雀": "uryuu_ginreigojiaku",
+  "银岭弧雀": "uryuu_ginreigojiaku",
+  "麻雀": "uryuu_ginreigojiaku",
+  "常态(弧雀)": "uryuu_ginreigojiaku",
+  "茶渡": "chad",
+  "茶渡泰虎": "chad",
+  "茶渡・泰虎": "chad",
+  "魔人茶渡": "sado_muerte",
+  "二虎": "sado_muerte",
+  "茶渡・泰虎魔人": "sado_muerte",
+  "阿散井・恋次卍解": "renji_bankai",
+  "冬狮郎卍解": "toushirou_bankai",
+  "日番谷・冬狮郎卍解": "toushirou_bankai",
+  "织姬": "orihime",
+  "井上织姬": "orihime",
+  "井上・织姬": "orihime",
+  "队长": "aizen_captain",
+  "乱菊": "rangiku",
+  "松本乱菊": "rangiku",
+  "松本・乱菊": "rangiku",
+  "牛头": "ogihci_vasto_lord",
+  "牛头一护": "ogihci_vasto_lord",
+  "新辅助深作&志麻(蛤蟆夫妇)": "fukasaku",
+  "深作": "fukasaku",
+  "志麻": "fukasaku",
+  "斩月死神之力": "zangetsu",
+  "斩月": "zangetsu"
+ },
+ "official": {
+  "suigetsu": "鬼灯·水月",
+  "uryuu_vollstandig": "石田·雨龙 完圣体",
+  "konan": "小南",
+  "act_aizen_captain": "蓝染·惣右介 队长 by:林海",
+  "//": "------------------------------------------------------------",
+  "xb_pig1": "野猪",
+  "onoki": "大野木",
+  "ichigo_half_hollow": "黑崎·一护 真正的斩月 半虚化",
+  "toushirou_bankai_old": "[旧版] 日番谷·冬狮郎 卍解",
+  "dordoni": "多鲁多尼·亚历山卓戴尔·索卡奇欧",
+  "neji": "日向·宁次",
+  "uryuu_ginreigojiaku": "石田·雨龙 银岭弧雀",
+  "ikkaku_bankai": "斑目·一角 卍解",
+  "act_Gin_zr": "市丸·银·卍解 by:B站昭泽安仁",
+  "wonderweiss": "汪达怀斯·马尔杰拉",
+  "xb_ninja_earth1": "土影小兵1",
+  "nagato": "长门",
+  "choji": "秋道·丁次",
+  "rukia_shikai_old": "[旧版] 朽木·露琪亚 始解",
+  "fukasaku": "深作仙人&志麻仙人",
+  "szayelaporro": "萨尔阿波罗·格兰兹",
+  "onoki_old": "[旧版] 大野木",
+  "ichigo_fullbring": "黑崎·一护 完现术",
+  "gaara": "我爱罗",
+  "obito": "“宇智波·斑”",
+  "obito_old": "[旧版] “宇智波·斑”",
+  "xb_ninja_sand1": "沙影小兵1",
+  "lee": "李·洛克",
+  "guy": "迈特·凯",
+  "jiraiya": "自来也",
+  "naruto_kyubi": "漩涡·鸣人 九尾查克拉模式",
+  "isane": "虎彻·勇音",
+  "grimmjow_vasto_lord": "葛力姆乔·贾卡杰克 瓦史托德",
+  "ichigo_fused": "黑崎·一护 完现术融合 始解",
+  "sasuke_juin": "宇智波·佐助 咒印",
+  "harribel_resurrection": "蒂雅·赫丽贝尔 归刃",
+  "kanonji": "唐·观音寺",
+  "yoruichi_old": "[旧版] 四枫院·夜一",
+  "ichigo_vizard": "黑崎·一护 虚化 卍解",
+  "minato_edo": "波风·水门 秽土转生",
+  "naruto_kyubi_old": "[旧版] 漩涡·鸣人 九尾查克拉模式",
+  "ogihci_vasto_lord": "白·一护 完全虚化",
+  "ogihci_bankai": "白·一护 卍解",
+  "bambietta": "邦比爱塔·芭丝塔拜因",
+  "karin": "香燐",
+  "kukaku": "志波·空鹤",
+  "lee_tomon": "李·洛克 杜门",
+  "ikkaku": "斑目·一角",
+  "xb_bear1": "熊",
+  "deidara_old_new": "[旧版·Ⅱ] 迪达拉",
+  "uryuu": "石田·雨龙",
+  "byakuya_bankai_old": "[旧版] 朽木·白哉 卍解",
+  "ichigo_bankai": "黑崎·一护 卍解",
+  "ichigo_vasto_lord": "黑崎·一护 完全虚化",
+  "komamura": "狛村·左阵",
+  "gin_bankai": "市丸·银 卍解",
+  "hinata_old_new": "[旧版·Ⅱ] 日向·雏田",
+  "harribel": "蒂雅·赫丽贝尔",
+  "act_kirei": "言峰绮礼 by:腐竹（柴郡猫不笑_）",
+  "zetsu": "绝",
+  "act_青年长门": "青年长门 by:黑咲_琉璃",
+  "kon": "魂",
+  "xb_kenshin_sx": "绯村·剑心 嗜血",
+  "itachi_edo": "宇智波·鼬 秽土转生",
+  "ogihci_old": "[旧版] 白·一护",
+  "madara_old": "[旧版] 宇智波·斑",
+  "liltotto": "莉托托·兰帕朵",
+  "ichigo_true": "黑崎·一护 真正的斩月",
+  "shikamaru": "奈良·鹿丸",
+  "kakashi": "旗木·卡卡西",
+  "ogihci": "白·一护",
+  "nnoitra": "诺伊特拉·吉尔加",
+  "random_low": "随机选择 低阶",
+  "xb_ninja_thunder1": "雷影小兵1",
+  "pain": "佩恩 六道",
+  "soifon_old_new": "[旧版·Ⅱ] 碎蜂",
+  "kakashi_kamui_old": "[旧版] 旗木·卡卡西 神威",
+  "sasuke_hebi": "宇智波·佐助 蛇小队",
+  "tobi": "自称阿飞的男人",
+  "niolchirabee": "鸟尔奇拉比",
+  "act_remilia": "蕾米莉亚·斯卡雷特 by:流光",
+  "sasuke_susanoo_old": "[旧版·Ⅰ] 宇智波·佐助 须佐能乎",
+  "kenshin_battousai": "绯村·剑心 拔刀斋",
+  "aizen": "蓝染·惣右介",
+  "random_high": "随机选择 高阶",
+  "giselle": "吉赛尔·茱艾尔",
+  "ulquiorra": "乌尔奇奥拉·西法",
+  "gin": "市丸·银",
+  "mayuri": "涅·茧利",
+  "sasuke_taka": "宇智波·佐助 鹰小队",
+  "kimimaro_goninshu": "君麻吕 音忍五人众",
+  "xb_ninja_2": "忍者小兵2",
+  "killerbee": "奇拉比",
+  "ichigo_dangai": "黑崎·一护 最后的月牙天冲",
+  "kira": "吉良·伊鹤",
+  "toushirou_bankai": "日番谷·冬狮郎 卍解",
+  "ichigo_half_mask": "黑崎·一护 虚化暴走",
+  "nozomi_kon": "九条·望实&魂",
+  "ichigo_bankai_old": "[旧版] 黑崎·一护 卍解",
+  "xb_ninja_fire2": "火影小兵2",
+  "kenshin": "绯村·剑心 浪客",
+  "random_naruto": "随机选择 火影",
+  "yachiru": "草鹿·八千流",
+  "ichigo_zero_old": "[旧版] 黑崎·一护",
+  "kenpachi": "更木·剑八",
+  "senjumaru": "修多罗·千手丸",
+  "naruto_ver1": "漩涡·鸣人 尾兽外衣",
+  "shunsui": "京乐·春水",
+  "deidara": "迪达拉",
+  "naruto": "漩涡·鸣人",
+  "byakuya": "朽木·白哉",
+  "gremmy": "葛雷密·托缪",
+  "ulquiorra_old": "[旧版] 乌尔奇奥拉·西法",
+  "hinata": "日向·雏田",
+  "ichigo_bloodchains": "黑崎·一护 血锁",
+  "ichigo_hmb": "黑崎·一护 虚化暴走 卍解",
+  "rukia_shikai": "朽木·露琪亚 始解",
+  "naruto_sennin": "漩涡·鸣人 仙人模式",
+  "gaara_old": "[旧版] 我爱罗",
+  "toushirou_kanzen_bankai": "日番谷·冬狮郎 卍解 完全解放",
+  "tensa": "天锁斩月",
+  "naruto_ver2_old": "[旧版] 漩涡·鸣人 尾兽化暴走",
+  "tenten": "天天",
+  "ichigo_vizard_old": "[旧版·Ⅰ] 黑崎·一护 虚化 卍解",
+  "cangdu": "苍都",
+  "kabuto_s": "药师·兜 超",
+  "yamamoto": "山本·元柳斎·重国",
+  "random_god": "随机选择 神阶",
+  "sakura_byakugo_old": "[旧版] 春野·樱 百豪",
+  "ichigo_bankai_alter": "黑崎·一护 卍解 Alter",
+  "nemu": "涅·音梦",
+  "act_黑崎一护-千年血战前篇（二段）": "黑崎一护-血战前篇Ⅱ by:星空_幻梦",
+  "tsunade": "纲手",
+  "ino": "山中·井野",
+  "temari": "手鞠",
+  "bg9": "BG9",
+  "kamen_otoko": "假面之男",
+  "soifon": "碎蜂",
+  "kukkapuro": "库卡布罗",
+  "random": "随机选择 全人物",
+  "hiruko": "人傀儡·绯流琥",
+  "tousen": "东仙·要",
+  "random_bleach": "随机选择 死神",
+  "orihime_shishun": "井上·织姬 六天死盾",
+  "grimmjow": "葛力姆乔·贾卡杰克",
+  "random_medium": "随机选择 中阶",
+  "kabuchimaru": "药师·兜 大蛇",
+  "sasuke_susanoo_old_new": "[旧版·Ⅱ] 宇智波·佐助 须佐能乎",
+  "james_mask": "詹姆斯&马斯可·多·马斯库林",
+  "kensei": "六车·拳西",
+  "shisui": "宇智波·止水",
+  "chad": "茶渡·泰虎",
+  "hirako": "平子·真子",
+  "yammy": "牙密·里亚尔戈",
+  "tobi_izanagi": "“宇智波·斑” 伊邪那岐",
+  "lille": "利捷·巴罗",
+  "kakashi_kamui": "旗木·卡卡西 神威",
+  "kuna": "久南·白",
+  "itachi_old": "[旧版·Ⅰ] 宇智波·鼬",
+  "pain_old": "[旧版·Ⅰ] 佩恩",
+  "orochimaru": "大蛇丸",
+  "bonnie": "波妮",
+  "tousen_vizard": "东仙·要 虚化",
+  "pain_tendo": "佩恩 天道",
+  "xb_ninja_1": "忍者小兵1",
+  "renji": "阿散井·恋次",
+  "obito_grandmaster": "宇智波·带土 宗师",
+  "sakura_byakugo": "春野·樱 百豪",
+  "kakashi_gsw": "旗木·卡卡西 忍界大战",
+  "soifon_old": "[旧版·Ⅰ] 碎蜂",
+  "hinata_old": "[旧版·Ⅰ] 日向·雏田",
+  "ulquiorra_murcielago": "乌尔奇奥拉·西法 归刃",
+  "kabuto": "药师·兜",
+  "kabuto_sennin": "药师·兜 仙人模式",
+  "sakura": "春野·樱",
+  "sai": "佐井",
+  "yoruichi": "四枫院·夜一",
+  "sasori": "蝎",
+  "naruto_ver2": "漩涡·鸣人 尾兽化暴走",
+  "fuu": "枫",
+  "xb_bird1": "鸟",
+  "sasuke": "宇智波·佐助",
+  "shishio": "志志雄·真实",
+  "grimmjow_old": "[旧版] 葛力姆乔·贾卡杰克",
+  "ulquiorra_murcielago_old": "[旧版] 乌尔奇奥拉·西法 归刃",
+  "toushirou": "日番谷·冬狮郎",
+  "obito_trueColors": "宇智波·带土",
+  "minato": "波风·水门",
+  "sasuke_amenotejikara": "宇智波·佐助 天手力",
+  "nel": "妮露",
+  "xb_placeholder_active": "活动·这个新人物真厉害",
+  "nelliel": "妮莉艾露·杜·欧德修凡克",
+  "byakuya_bankai": "朽木·白哉 卍解",
+  "orihime": "井上·织姬",
+  "kaien": "志波·海燕",
+  "obito_captain": "宇智波·带土 队长",
+  "kisame": "干柿·鬼鲛",
+  "deidara_old": "[旧版·Ⅰ] 迪达拉",
+  "kabuto_chikara": "药师·兜 力",
+  "ichigo_fused_bankai": "黑崎·一护 完现术融合 卍解",
+  "renji_bankai": "阿散井·恋次 卍解",
+  "aizen_captain": "蓝染·惣右介 队长",
+  "zangetsu": "斩月",
+  "juggo": "重吾",
+  "hiyori": "猿柿·日世里",
+  "gin_bankai_old": "[旧版] 市丸·银 卍解",
+  "mayuri_alter": "涅·茧利",
+  "ichigo": "黑崎·一护 始解",
+  "itachi": "宇智波·鼬",
+  "pernida": "佩尼达·帕卡贾",
+  "suigetsu_taka": "鬼灯·水月 鹰小队",
+  "kenpachi_old": "[旧版] 更木·剑八",
+  "obito_rikudou": "宇智波·带土 六道仙人",
+  "suigetsu_old": "[旧版] 鬼灯·水月",
+  "madara": "宇智波·斑",
+  "act_minato": "波风·水门 by:Mitsune（御狐）",
+  "utakata": "泡沫",
+  "rukia": "朽木·露琪亚 义骸",
+  "sado_muerte": "茶渡·泰虎 魔人",
+  "sasuke_susanoo": "宇智波·佐助 须佐能乎",
+  "xb_dog1": "狗",
+  "pain_old_new": "[旧版·Ⅱ] 佩恩",
+  "xb_ninja_fire1": "火影小兵1",
+  "sasuke_old": "[旧版] 宇智波·佐助",
+  "aizen_muken": "蓝染·惣右介 无间封印",
+  "riruka": "毒峰·莉露卡",
+  "kimimaro": "君麻吕",
+  "act_乙骨忧太-里香显现": "乙骨忧太 - 祈本里香 by:星空_幻梦",
+  "juggo_old": "[旧版] 重吾",
+  "itachi_old_new": "[旧版·Ⅱ] 宇智波·鼬",
+  "ganju": "志波·岩鹫",
+  "tayuya": "多由也",
+  "debug": "反暗改监督装置",
+  "starrk": "柯雅泰·史塔克",
+  "ichigo_true_bankai": "黑崎·一护 真正的天锁斩月",
+  "urahara": "浦原·喜助",
+  "mayuri_s": "涅·茧利 超",
+  "ichigo_vizard_old_new": "[旧版·Ⅱ] 黑崎·一护 虚化 卍解",
+  "sasuke_juin_old": "[旧版] 宇智波·佐助 咒印",
+  "sasuke_kaidan": "宇智波·佐助 五影会谈",
+  "orochimaru_old": "[旧版] 大蛇丸",
+  "ichigo_zero": "黑崎·一护",
+  "rangiku": "松本·乱菊",
+  "aaroniero": "亚罗尼洛·艾鲁鲁耶利",
+  "starrk_resurrection": "柯雅泰·史塔克 归刃",
+  "karin_old": "[旧版] 香燐",
+  "obito_trueColors_old": "[旧版] 宇智波·带土"
+ }
+}

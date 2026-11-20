@@ -1,0 +1,27 @@
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# AI 会话与本地调试产物（不属于项目内容）
+.workbuddy/
+_*.png
+_dom*.html
+_shot_*.png
+*.log
+
+# 原始参考资料：仅保留在本地，不公开
+# （各版本 docx、历史留档、config、中文语言文件、角色美术设定等）
+sources/
+
+# 构建产物可随时重建；如需在 CI 里生成可解开下面两行
+# data/changelog.json
+# data/changelog.js
