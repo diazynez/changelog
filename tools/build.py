@@ -458,6 +458,72 @@ id2alias = {}
 for a, fid in alias2id.items():
     id2alias.setdefault(fid, []).append(a)
 
+# ---------------------------------------------------------------------------
+# 分阶与完整角色清单：以 select.xml 为准（selects.xml 含未完成角色，不采用）
+# select.xml 用注释把选人界面切成「低阶 / 中阶 / 高阶 / 黑屋隐藏阶」若干行，
+# 辅助界面在 <assist_list> 里单独分「突进 / 功能 / 贴身 / 控场 / 范围」类型，不分阶。
+# ---------------------------------------------------------------------------
+SELECT_TIER, SELECT_ORDER, SELECT_MAIN_IDS, SELECT_ASSIST_IDS = {}, {}, [], []
+_sel = io.open(os.path.join(SRC, "config", "select.xml"), encoding="utf-8").read()
+_main_part, _assist_part = _sel.split("<assist_list>")
+_TIER_PREFIX = [("低阶", "low"), ("中阶", "mid"), ("高阶", "high"), ("黑屋隐藏阶", "god")]
+
+
+def _sel_items(body):
+    """取 <item> 的 id；alterFighter 是可切换的同位形态，算同一位置。"""
+    out = []
+    for m in re.finditer(r'<item([^>]*)>([^<]*)</item>', body):
+        attrs, txt = m.group(1), m.group(2).strip()
+        if not txt or txt.startswith("random") or txt == "xb_placeholder_active":
+            continue
+        if txt not in out:
+            out.append(txt)
+        alt = re.search(r'alterFighter="([^"]+)"', attrs)
+        if alt:
+            for a in alt.group(1).split(","):
+                a = a.strip()
+                if a and a not in out:
+                    out.append(a)
+    return out
+
+
+_blocks = re.split(r'<!--\s*([^>]*?)\s*-->', _main_part)
+for _i in range(1, len(_blocks), 2):
+    _name, _body = _blocks[_i], _blocks[_i + 1]
+    _t = next((v for k, v in _TIER_PREFIX if _name.startswith(k)), None)
+    if not _t:
+        continue
+    for _x in _sel_items(_body):
+        if _x not in SELECT_TIER:
+            SELECT_TIER[_x] = _t
+            SELECT_ORDER[_x] = len(SELECT_ORDER)
+            SELECT_MAIN_IDS.append(_x)
+for _x in _sel_items(_assist_part):
+    if _x != "debug" and _x not in SELECT_ASSIST_IDS:
+        SELECT_ASSIST_IDS.append(_x)
+
+
+def _bare(fid):
+    return fid[:-4] if fid.endswith("_old") else fid
+
+
+def tier_of(fid):
+    """主人物分阶；select 里的 id 可能带 _old 后缀（如 obito_trueColors_old）。"""
+    return SELECT_TIER.get(fid) or SELECT_TIER.get(fid + "_old")
+
+
+def order_of(fid):
+    return SELECT_ORDER.get(fid, SELECT_ORDER.get(fid + "_old", 999))
+
+
+def name_tags(name):
+    """把「黑崎·一护 虚化暴走 卍解」拆成主名 + 形态标签，供前端渲染成徽章。"""
+    parts = [p for p in re.split(r'\s+', (name or '').strip()) if p]
+    if not parts:
+        return name or "", []
+    return parts[0], parts[1:]
+
+
 for (fid, role), c in chars.items():
     c["versions"] = {v: c["versions"][v] for v in sorted(c["versions"], key=vsort)}
     c["changeCount"] = sum(len(x) for x in c["versions"].values())
@@ -468,6 +534,44 @@ for (fid, role), c in chars.items():
     alias_set.discard(c["name"].replace(" ", ""))
     c["aliases"] = sorted(alias_set, key=lambda x: -len(x))[:8]
     c["camp"] = camp_of(fid)
+    c["tier"] = None if role == ROLE_ASSIST else tier_of(fid)
+    c["order"] = order_of(fid)
+    c["nameBase"], c["nameTags"] = name_tags(c["name"])
+
+# ---------------------------------------------------------------------------
+# 补全 select.xml 里存在、但历史文档没有任何改动的角色：给一张 0 条的空卡，
+# 保证「角色一览」覆盖游戏内全部可选主人物 / 辅助。
+# ---------------------------------------------------------------------------
+_face_dir = os.path.join(ROOT, "face")
+_have_faces = {f[:-4] for f in os.listdir(_face_dir) if f.endswith(".png")} if os.path.isdir(_face_dir) else set()
+added_empty = []
+for _fid in SELECT_MAIN_IDS:
+    _f = _bare(_fid)
+    if (_f, ROLE_MAIN) in chars or any(k[0] == _f and k[1] == ROLE_MAIN for k in chars):
+        continue
+    _nm = official.get(_f) or _f
+    _base, _tags = name_tags(_nm)
+    chars[(_f, ROLE_MAIN)] = {
+        "id": _f, "baseId": _f, "name": _nm, "nameBase": _base, "nameTags": _tags,
+        "avatar": _f if _f in _have_faces else None, "versions": {}, "isAssist": False,
+        "role": ROLE_MAIN, "changeCount": 0, "aliases": [], "camp": camp_of(_f),
+        "tier": tier_of(_f), "order": order_of(_f),
+    }
+    added_empty.append(_f)
+for _fid in SELECT_ASSIST_IDS:
+    _f = _bare(_fid)
+    key = (_f, ROLE_ASSIST)
+    if key in chars:
+        continue
+    _nm = official.get(_f) or _f
+    _base, _tags = name_tags(_nm)
+    chars[key] = {
+        "id": _f + "::assist", "baseId": _f, "name": _nm, "nameBase": _base, "nameTags": _tags,
+        "avatar": _f if _f in _have_faces else None, "versions": {}, "isAssist": True,
+        "role": ROLE_ASSIST, "changeCount": 0, "aliases": [], "camp": camp_of(_f),
+        "tier": None, "order": 999,
+    }
+    added_empty.append(_f + "::assist")
 
 # mainlog
 mainlog = json.load(open(os.path.join(TOOLDATA, "mainlog.json"), encoding="utf-8"))
@@ -490,7 +594,8 @@ ref_images = [
 ]
 
 out = {
-    "characters": sorted(chars.values(), key=lambda c: (-c["changeCount"], c["name"])),
+    # 默认顺序：主人物在前、辅助沉底；主人物内按改动条数降序
+    "characters": sorted(chars.values(), key=lambda c: (c["isAssist"], -c["changeCount"], c["name"])),
     "unmatched": sorted(unmatched.items(), key=lambda x: -len(x[1])),
     "versions": VERSION_ORDER,
     "pendingVersions": PENDING_VERSIONS,
@@ -503,6 +608,8 @@ out = {
     "stats": {
         "characters": len([c for c in chars.values() if not c["id"].startswith("RAW::")]),
         "withAvatar": len([c for c in chars.values() if c["avatar"]]),
+        "withChanges": len([c for c in chars.values() if c["changeCount"]]),
+        "noChanges": len([c for c in chars.values() if not c["changeCount"]]),
         "versionCount": len(VERSION_ORDER),
         "versionsWithData": len(set(v for c in chars.values() for v in c["versions"])),
         "totalChangeEntries": sum(c["changeCount"] for c in chars.values()),
@@ -518,6 +625,8 @@ io.open(os.path.join(OUTDIR, "changelog.js"), "w", encoding="utf-8").write(
     "window.CHANGELOG_DATA=" + txt + ";\n")
 
 print("STATS", out["stats"])
+if added_empty:
+    print("\n按 select.xml 补入的 0 改动角色:", added_empty)
 print("json bytes:", len(txt.encode("utf-8")))
 print("\nTOP:")
 for c in out["characters"][:8]:

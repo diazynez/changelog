@@ -15,6 +15,7 @@
 
   const CAMP_LABEL = { bleach: '死神', naruto: '火影', other: '其他' };
   const SEC_LABEL = { add: '新增', fix: '修复', change: '更改', remove: '删除', note: '贴士' };
+  const TIER_LABEL = { low: '低阶', mid: '中阶', high: '高阶', god: '神阶' };
 
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -52,6 +53,8 @@
         q: '',
         camp: 'all',
         type: 'all',
+        tier: 'all',
+        sortBy: 'count',
         ver: 'all',
         hideEmpty: false,
         selected: null,
@@ -77,6 +80,19 @@
           { k: 'all', label: '全部' },
           { k: 'main', label: '主人物' },
           { k: 'assist', label: '辅助' }
+        ],
+        // 分阶只对主人物有效；辅助不参与分阶
+        tierChips: [
+          { k: 'all', label: '全部' },
+          { k: 'low', label: '低阶' },
+          { k: 'mid', label: '中阶' },
+          { k: 'high', label: '高阶' },
+          { k: 'god', label: '神阶' }
+        ],
+        sortOptions: [
+          { k: 'count', label: '按改动条数' },
+          { k: 'order', label: '按选人顺序' },
+          { k: 'name', label: '按名称' }
         ]
       };
     },
@@ -111,7 +127,7 @@
 
       filteredChars() {
         const q = this.normQ();
-        return this.all.filter((c) => this.matchBase(c, q));
+        return this.sortChars(this.all.filter((c) => this.matchBase(c, q)));
       },
 
       groups() {
@@ -155,6 +171,10 @@
       view(v) {
         if (this._silent) return;
         history.replaceState(null, '', v === 'chars' ? location.pathname + location.search : '#' + v);
+      },
+      // 辅助不分阶：切到辅助时清掉分阶条件，避免筛出空列表
+      type(v) {
+        if (v === 'assist' && this.tier !== 'all') this.tier = 'all';
       }
     },
 
@@ -184,10 +204,38 @@
       matchBase(c, q) {
         if (this.camp !== 'all' && (c.camp || 'other') !== this.camp) return false;
         if (this.type !== 'all' && (c.isAssist ? 'assist' : 'main') !== this.type) return false;
+        // 分阶只筛主人物：辅助不参与分阶，选中具体阶时自动排除
+        if (this.tier !== 'all') {
+          if (c.isAssist) return false;
+          if (c.tier !== this.tier) return false;
+        }
+        if (this.ver !== 'all' && !(c.versions && c.versions[this.ver])) return false;
         if (!q) return true;
         let t = c.name + ' ' + (c.aliases || []).join(' ');
         for (const v in c.versions) t += ' ' + c.versions[v].join(' ');
         return t.toLowerCase().indexOf(q) !== -1;
+      },
+
+      /** 排序：无论怎么排，辅助始终沉底到角色之后 */
+      sortChars(list) {
+        const by = this.sortBy;
+        const nameOf = (c) => c.nameBase || c.name;
+        const ord = (c) => (c.order == null ? 999 : c.order); // 注意 0 是合法序号，不能用 || 兜底
+        return list.slice().sort((a, b) => {
+          if (a.isAssist !== b.isAssist) return a.isAssist ? 1 : -1;
+          if (by === 'order') {
+            const d = ord(a) - ord(b);
+            return d || nameOf(a).localeCompare(nameOf(b), 'zh-Hans-CN');
+          }
+          if (by === 'name') {
+            return nameOf(a).localeCompare(nameOf(b), 'zh-Hans-CN') || a.name.localeCompare(b.name, 'zh-Hans-CN');
+          }
+          return b.changeCount - a.changeCount || ord(a) - ord(b);
+        });
+      },
+
+      tierLabel(k) {
+        return TIER_LABEL[k] || '';
       },
 
       campLabel(k) {

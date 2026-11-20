@@ -50,12 +50,24 @@
               <button class="chip" v-for="c in typeChips" :key="c.k" :class="{ on: type === c.k }" @click="type = c.k">{{ c.label }}</button>
             </div>
           </div>
+          <div class="fgroup">
+            <span class="flabel">分阶</span>
+            <div class="chips">
+              <button class="chip" v-for="c in tierChips" :key="c.k" :class="{ on: tier === c.k }" @click="tier = c.k">{{ c.label }}</button>
+              <span class="fhint" v-if="type === 'assist'">辅助不分阶</span>
+            </div>
+          </div>
         </div>
 
-        <select class="sel" v-model="ver" aria-label="按版本筛选">
-          <option value="all">全部版本</option>
-          <option v-for="v in versions" :key="v" :value="v">{{ v }}</option>
-        </select>
+        <div class="selects">
+          <select class="sel" v-model="sortBy" aria-label="排序方式">
+            <option v-for="s in sortOptions" :key="s.k" :value="s.k">{{ s.label }}</option>
+          </select>
+          <select class="sel" v-model="ver" aria-label="按版本筛选">
+            <option value="all">全部版本</option>
+            <option v-for="v in versions" :key="v" :value="v">{{ v }}</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
@@ -75,13 +87,18 @@
         <article class="ccard" v-for="c in filteredChars" :key="c.id" @click="open(c)" tabindex="0" @keydown.enter="open(c)">
           <span class="badge" :class="c.camp">{{ campLabel(c.camp) }}</span>
           <span v-if="c.isAssist" class="badge assist">辅助</span>
+          <span v-else-if="c.tier" class="badge tier" :class="c.tier">{{ tierLabel(c.tier) }}</span>
           <img v-if="c.avatar && !broken[c.id]" class="avatar" :src="'face/' + c.avatar + '.png'" :alt="c.name" loading="lazy" @error="broken[c.id] = 1">
           <div v-else class="avatar ph">{{ c.name.charAt(0) }}</div>
-          <div class="cname" v-html="hl(c.name)"></div>
-          <div class="cmeta">
+          <div class="cname">
+            <span class="nm" v-html="hl(c.nameBase || c.name)"></span>
+            <span class="ntag" v-for="(t, i) in (c.nameTags || [])" :key="i" v-html="hl(t)"></span>
+          </div>
+          <div class="cmeta" v-if="c.changeCount">
             <span>版本 <b>{{ Object.keys(c.versions).length }}</b></span>
             <span>改动 <b>{{ c.changeCount }}</b></span>
           </div>
+          <div class="cmeta none" v-else><span>暂无改动记录</span></div>
         </article>
       </div>
 
@@ -125,7 +142,7 @@
                 <img v-if="c.avatar" :src="'face/' + c.avatar + '.png'" :alt="c.name" loading="lazy" @error="$event.target.style.visibility = 'hidden'">
                 <div v-else class="x">◌</div>
                 <div>
-                  <div class="nm">{{ c.name }}<span class="vrole" :class="{ main: !c.isAssist }">{{ c.isAssist ? '辅助' : '主人物' }}</span></div>
+                  <div class="nm">{{ c.nameBase || c.name }}<span class="ntag sm" v-for="(t, ti) in (c.nameTags || [])" :key="ti">{{ t }}</span><span class="vrole" :class="{ main: !c.isAssist }">{{ c.isAssist ? '辅助' : '主人物' }}</span></div>
                   <div class="it">{{ previewText(c, g.v) }}</div>
                 </div>
               </div>
@@ -192,10 +209,15 @@
         <img v-if="selected.avatar && !broken[selected.id]" class="avatar" :src="'face/' + selected.avatar + '.png'" :alt="selected.name" @error="broken[selected.id] = 1">
         <div v-else class="avatar ph">{{ selected.name.charAt(0) }}</div>
         <div>
-          <h3>{{ selected.name }}</h3>
+          <h3>
+            <span v-html="hl(selected.nameBase || selected.name)"></span>
+            <span class="ntag" v-for="(t, i) in (selected.nameTags || [])" :key="'t' + i" v-html="hl(t)"></span>
+          </h3>
           <div class="dtags">
             <span class="dt" :class="selected.camp">{{ campLabel(selected.camp) }}</span>
             <span class="dt" :class="{ assist: selected.isAssist }">{{ selected.isAssist ? '辅助' : '主人物' }}</span>
+            <span class="dt tier" v-if="!selected.isAssist && selected.tier" :class="selected.tier">{{ tierLabel(selected.tier) }}</span>
+            <span class="dt" v-if="!selected.isAssist && !selected.tier">未列阶</span>
             <span class="dt">ID: {{ selected.id }}</span>
             <span class="dt">涉及 {{ Object.keys(selected.versions).length }} 个版本</span>
           </div>
@@ -203,6 +225,9 @@
       </div>
     </div>
     <div class="dbody">
+      <div class="dnone" v-if="!selected.changeCount">
+        该角色在已收录的 33 个版本改动记录中没有任何调整，此处仅保留角色位置。
+      </div>
       <div class="vgroup" v-for="v in Object.keys(selected.versions)" :key="v" :class="{ closed: closedGroups[selected.id + v] }">
         <div class="vg-head" @click="closedGroups[selected.id + v] = !closedGroups[selected.id + v]">
           <span class="vv">V {{ v }}</span>
