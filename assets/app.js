@@ -339,13 +339,35 @@
         return !!this.pendingVersions[v];
       },
 
-      open(c) {
+      /**
+       * 打开角色详情。ver 为「按版本」视图里点击时所在的版本：
+       * 有 ver 时只展开该版本并滚到它，避免用户还要在抽屉里翻找。
+       */
+      open(c, ver) {
         this.selected = c;
         const closed = {};
         Object.keys(c.versions).forEach((v, i) => {
-          if (i > 2) closed[c.id + v] = true;
+          if (ver ? v !== ver : i > 2) closed[c.id + v] = true;
         });
         this.closedGroups = closed;
+        this.$nextTick(() => this.scrollDrawerTo(ver));
+      },
+
+      /** 抽屉正文滚动到指定版本组（.dbody 是独立滚动容器） */
+      scrollDrawerTo(ver) {
+        // 注意：根模板是多节点的 Fragment，this.$el 不是元素（拿不到 querySelector），
+        // 所以用 ref，再退回到全局查询。
+        const body = this.$refs.dbody || document.querySelector('.dbody');
+        if (!body) return;
+        body.scrollTop = 0; // 从一个角色直接切到另一个时先归零
+        if (!ver) return;
+        const g = Array.prototype.find.call(
+          body.querySelectorAll('.vgroup'),
+          (el) => el.getAttribute('data-ver') === ver
+        );
+        if (!g) return;
+        // 用 rect 差值算偏移：offsetTop 的参照系不一定就是 .dbody
+        body.scrollTop += g.getBoundingClientRect().top - body.getBoundingClientRect().top;
       }
     }
   });

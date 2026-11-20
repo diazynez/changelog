@@ -139,7 +139,7 @@
             <div class="vb-src" v-if="g.rel.releaseDate && g.rel.source">来源：{{ g.rel.source }}</div>
             <div class="vb-src" v-if="g.pendingNote">{{ g.pendingNote }}</div>
             <div class="vb-chars" v-if="g.chars.length">
-              <div class="vbc" v-for="c in g.chars" :key="c.id" @click="open(c)">
+              <div class="vbc" v-for="c in g.chars" :key="c.id" @click="open(c, g.v)">
                 <img v-if="c.avatar" :src="'face/' + c.avatar + '.png'" :alt="c.name" loading="lazy" @error="$event.target.style.visibility = 'hidden'">
                 <div v-else class="x">◌</div>
                 <div>
@@ -225,11 +225,11 @@
         </div>
       </div>
     </div>
-    <div class="dbody">
+    <div class="dbody" ref="dbody">
       <div class="dnone" v-if="!selected.changeCount">
         该角色在已收录的 33 个版本改动记录中没有任何调整，此处仅保留角色位置。
       </div>
-      <div class="vgroup" v-for="v in Object.keys(selected.versions)" :key="v" :class="{ closed: closedGroups[selected.id + v] }">
+      <div class="vgroup" v-for="v in Object.keys(selected.versions)" :key="v" :data-ver="v" :class="{ closed: closedGroups[selected.id + v] }">
         <div class="vg-head" @click="closedGroups[selected.id + v] = !closedGroups[selected.id + v]">
           <span class="vv">V {{ v }}</span>
           <span class="vd" v-if="rel[v] && rel[v].logDate">{{ rel[v].logDate }}</span>
