@@ -403,6 +403,13 @@ def vsort(v):
 
 # 阵营映射：直接读取游戏 config 的 comic_type（0=死神, 1=火影, -1/缺省=其他）
 CAMP_FROM_CONFIG = {}
+# config 把联动角色塞进了死神槽位（comic_type=0），但它们不属于《死神》IP，
+# 按作品归到「其他」；带二同理，缺配置时按 IP 归火影。
+CAMP_OVERRIDE = {
+    "kenshin": "other", "kenshin_battousai": "other",   # 浪客剑心
+    "shishio": "other",                                  # 浪客剑心
+    "obito_trueColors": "naruto",                        # 火影忍者
+}
 FIGHTER_IDS = set()
 for _fn in ("config/fighter.xml", "config/assist.xml"):
     _s = io.open(os.path.join(SRC, _fn), encoding="utf-8").read()
@@ -423,7 +430,13 @@ bad_main = [(c["id"], c["name"]) for c in chars.values()
 
 
 def camp_of(fid):
-    return CAMP_FROM_CONFIG.get(fid, "other")
+    if fid in CAMP_OVERRIDE:
+        return CAMP_OVERRIDE[fid]
+    if fid in CAMP_FROM_CONFIG:
+        return CAMP_FROM_CONFIG[fid]
+    # 未直接登记时按同角色的旧版推断（带二的 trueColors 只在 select.xml 注册，
+    # fighter.xml 里只有 obito_trueColors_old）
+    return CAMP_FROM_CONFIG.get(fid + "_old", "other")
 
 
 # reverse map: fid -> list of aliases
