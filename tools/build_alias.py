@@ -34,9 +34,15 @@ def official(fid):
 # Sources: fan nickname chart (昵称表), user corrections, common knowledge
 ALIASES = {
     # ---- 一护家族 ----
-    "一护":"ichigo","黑崎一护":"ichigo","黑崎·一护":"ichigo","零段一护":"ichigo","零段":"ichigo",
+    "一护":"ichigo","黑崎一护":"ichigo","黑崎·一护":"ichigo",
     "始护":"ichigo","黑崎·一护 始解":"ichigo","始解":"ichigo",
-    "半虚":"ichigo_half_mask","黑崎·一护 虚化暴走":"ichigo_half_mask","内虚":"ichigo_half_mask","白牛头":"ogihci_vasto_lord",
+    # 零段：与「一护包」（始解/卍解/虚化暴走/虚化暴走卍解/虚化）是两个独立包体，
+    # 旧称「零段」，改名后与一护包的基础形态同叫「黑崎·一护」，必须分开。
+    "零段一护":"ichigo_zero","零段":"ichigo_zero",
+    "半虚":"ichigo_half_mask","黑崎·一护 虚化暴走":"ichigo_half_mask","白牛头":"ogihci_vasto_lord",
+    # 内虚 = 白一护的旧称（旧文档里 内虚 下挂 始虚/卍虚/始解/卍解）
+    "内虚":"ogihci","内虚 始解":"ogihci","内虚始解":"ogihci",
+    "内虚 卍解":"ogihci_bankai","内虚卍解":"ogihci_bankai",
     "半卍":"ichigo_hmb","黑崎·一护 虚化暴走 卍解":"ichigo_hmb",
     "卍护":"ichigo_bankai","一护 卍解":"ichigo_bankai","黑崎·一护 卍解":"ichigo_bankai",
     "虚化":"ichigo_vizard","虚化卍解":"ichigo_vizard","虚化 卍解":"ichigo_vizard",

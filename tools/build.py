@@ -33,17 +33,48 @@ def norm(s):
     return s.replace("·", "・").replace(" ", "").replace("　", "").replace("（", "(").replace("）", ")")
 
 
+# 「父级角色 + 形态词」→ 角色ID。
+# 没有这张表时，形态词会退化成裸词查询（如「始解」默认指向黑崎·一护），
+# 把白哉/冬狮郎/恋次等角色的始解改动错误地并进一护卡片。
+FORM_PARENT = {
+    ("ichigo", "始解"): "ichigo",
+    ("ichigo", "卍解"): "ichigo_bankai",
+    ("ichigo", "虚化"): "ichigo_vizard",
+    ("byakuya", "始解"): "byakuya",
+    ("byakuya", "卍解"): "byakuya_bankai",
+    ("toushirou", "始解"): "toushirou",
+    ("toushirou", "卍解"): "toushirou_bankai",
+    ("renji", "始解"): "renji",
+    ("renji", "卍解"): "renji_bankai",
+    ("rukia", "始解"): "rukia_shikai",
+    ("rukia", "义骸"): "rukia",
+    ("ogihci", "始解"): "ogihci",
+    ("ogihci", "卍解"): "ogihci_bankai",
+    ("zangetsu", "始解"): "zangetsu",
+    ("uryuu", "常态"): "uryuu",
+    ("ulquiorra", "常态"): "ulquiorra",
+    ("ulquiorra", "归刃"): "ulquiorra_murcielago",
+}
+
+
 def lookup(name, parent=None):
     n = name.strip().rstrip("：:")
     n = re.sub(r'[（(]\s*调整负责[：:][^)）]*[)）]', '', n).strip()
     n = re.sub(r'^(新角色|角色重置|新辅助|新增|新人物)\s*', '', n).strip()
-    # if this is a generic form word and we have a parent, try combined name first
-    candidates = [n]
+    # 形态词（始解/卍解/虚化…）必须优先按「父级 + 形态」解析，
+    # 否则裸词会先命中别名表里的默认角色，把别的角色的数据串进来。
     if parent and GENERIC_FORM.match(n.strip()):
         pclean = re.sub(r'[（(]\s*调整负责[：:][^)）]*[)）]', '', parent).strip().rstrip("：:")
-        candidates.append(pclean + " " + n.strip())
-        candidates.append(pclean + n.strip())
-    for cand in candidates:
+        pid = lookup(pclean)                      # 父级自身（非形态词，不会递归）
+        if pid and (pid, n) in FORM_PARENT:
+            return FORM_PARENT[(pid, n)]
+        for cand in (pclean + " " + n, pclean + n):
+            nc = norm(cand)
+            if nc in alias2id:
+                return alias2id[nc]
+        # 组合与表都没命中：宁可不猜，交给调用方按父级兜底
+        return None
+    for cand in (n,):
         nc = norm(cand)
         if nc in alias2id:
             return alias2id[nc]
@@ -215,13 +246,23 @@ def add_change(fid, ver, item, role):
     c["versions"].setdefault(ver, []).append(item)
 
 
+# 个别版本里同一个标题指向不同角色，只能按版本区分。
+# 3.8.5.8 的「黑崎一护」带「角色素材、技能组翻新，重新还原了一护在早期剧情中…」的重做说明，
+# 指的是零段（无始解的基础一护），不是一护包的基础形态。
+VERSION_NAME_OVERRIDE = {
+    ("3.8.5.8", "黑崎一护"): "ichigo_zero",
+    ("3.8.5.8", "黑崎·一护"): "ichigo_zero",
+}
+
 # docx
 for ver, files in DOCX_MAP:
     for f in files:
         paras = read_paras(os.path.join(READ, f))
         entries = parse_doc(paras)
         for e in entries:
-            fid = lookup(e["name"], e.get("root"))
+            fid = VERSION_NAME_OVERRIDE.get((ver, split_name(e["name"])))
+            if fid is None:
+                fid = lookup(e["name"], e.get("root"))
             if fid is None and e.get("root"):
                 # form word whose combo failed: fall back to the root character
                 fid = lookup(e["root"])
