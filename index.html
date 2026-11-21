@@ -114,7 +114,7 @@
 
     <!-- ===== 按版本 ===== -->
     <section v-show="view === 'versions'">
-      <div class="note-box">按版本浏览：每个版本列出了所有有改动记录的角色。发布时间以官方渠道查证为准；<b>标注「提交日」的版本表示未查到确切发布日</b>，日期取自主程序开发日志的最后提交时间，仅供参考。点击角色可查看详情。</div>
+      <div class="note-box">按版本浏览：每个版本列出了所有有改动记录的角色。发布时间以官方渠道查证为准，未查到确切发布日的版本标注「发布日未定」。点击角色可查看详情。</div>
 
       <div class="sec-head">
         <span class="kick"></span><h2>版本列表</h2><span class="en">VERSIONS</span>
@@ -127,7 +127,6 @@
         <div class="vblock" v-for="g in groups" :key="g.v" :class="{ open: openVer === g.v }">
           <div class="vb-head" @click="toggleVer(g.v, $event)">
             <span class="vb-ver">V {{ g.v }}</span>
-            <span class="vb-date" v-if="g.rel.logDate || g.rel.releaseDate">日志 {{ g.rel.logDate || g.rel.releaseDate }}</span>
             <span v-if="g.rel.releaseDate" class="vb-rel">发布 {{ g.rel.releaseDate }}</span>
             <span v-else class="vb-rel none">发布日未定</span>
             <span v-if="g.rel.note && g.rel.releaseDate" class="vb-note" :title="g.rel.note">有来源</span>
@@ -156,13 +155,15 @@
 
     <!-- ===== 主程序日志 ===== -->
     <section v-show="view === 'supp'">
-      <div class="note-box">以下内容是<b>主程序开发日志</b>的原始记录（引擎 / 系统 / UI / 插件层面的更新）。日志里的日期是<b>最后提交代码的时间</b>，并非版本发布时间——真实发布日期见「角色档案」页顶部说明与「按版本」页。这里作为补充说明保留。</div>
+      <div class="note-box">以下内容是<b>主程序开发日志</b>的原始记录（引擎 / 系统 / UI / 插件层面的更新）。此处日志日期是<b>最后提交代码的时间</b>，与<b>发布时间</b>并列展示，仅本页保留两组时间；其他页面统一只显示发布时间。</div>
 
       <div class="sec-head"><span class="kick"></span><h2>主程序开发日志</h2><span class="en">ENGINE LOG</span></div>
       <div class="ml-block" v-for="(m, i) in mainlog" :key="m.version" :class="{ open: openLog === m.version }">
         <div class="ml-head" @click="toggleLog(m.version, $event)">
           <span class="v">V {{ m.version }}</span>
-          <span class="d">{{ m.date }}</span>
+          <span class="d">日志 {{ m.date }}</span>
+          <span v-if="rel[m.version] && rel[m.version].releaseDate" class="vrel">发布 {{ rel[m.version].releaseDate }}</span>
+          <span v-else class="vrel none">发布日未定</span>
           <span class="dt" v-if="m.verRange">ver {{ m.verRange }}</span>
           <span class="c">{{ logCount(m) }} 条</span>
         </div>
@@ -234,9 +235,8 @@
       <div class="vgroup" v-for="v in Object.keys(selected.versions)" :key="v" :data-ver="v" :class="{ closed: closedGroups[selected.id + v] }">
         <div class="vg-head" @click="closedGroups[selected.id + v] = !closedGroups[selected.id + v]">
           <span class="vv">V {{ v }}</span>
-          <span class="vd" v-if="rel[v] && rel[v].logDate">{{ rel[v].logDate }}</span>
           <span v-if="rel[v] && rel[v].releaseDate" class="vrel">发布 {{ rel[v].releaseDate }}</span>
-          <span v-else class="vrel none">提交日</span>
+          <span v-else class="vrel none">发布日未定</span>
           <span class="vsub">{{ selected.versions[v].length }} 条</span>
           <span class="caret">▾</span>
         </div>

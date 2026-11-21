@@ -113,10 +113,10 @@
         const hi = Object.entries(this.rel).filter(([k, v]) => v.releaseDate && v.confidence === 'high');
         const samples = hi.slice(0, 5).map(([v, r]) => `${esc(v)} → ${esc(r.releaseDate)}`).join('、');
         const pending = Object.keys(this.pendingVersions);
-        return '<b>关于日期：</b>主程序日志里的日期只代表最后一次提交代码，并非版本发布时间。' +
-          `此处列出官方渠道查证的 <b>${hi.length}</b> 个确切发布日` +
+        return '<b>关于日期：</b>本页与「按版本」页统一只显示官方渠道查证的发布时间；主程序日志的提交日仅保留在「主程序日志」页。' +
+          `此处列出 <b>${hi.length}</b> 个确切发布日` +
           (samples ? `，例如 ${samples}` : '') +
-          '；其余版本或未查到确切日期的均在详情中标注「提交日」。' +
+          '；未查到确切发布日的版本标注「发布日未定」。' +
           (pending.length
             ? `另有 <b>${pending.join('、')}</b> 已确认存在但暂无改动记录，等待补充。`
             : '');
