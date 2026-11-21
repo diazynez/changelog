@@ -430,6 +430,9 @@ CAMP_OVERRIDE = {
 FIGHTER_IDS = set()
 for _fn in ("config/fighter.xml", "config/assist.xml"):
     _s = io.open(os.path.join(SRC, _fn), encoding="utf-8").read()
+    # 注意：fighter.xml 里有 70+ 个被 <!-- --> 注释掉的旧角色（urahara、karin、nel…）。
+    # 不先删注释的话，正则会把这些停放角色当成在役角色，凭文档里的一句提及就生出主人物卡。
+    _s = re.sub(r"<!--.*?-->", "", _s, flags=re.S)
     for _m in re.finditer(r'<fighter\s+id="([^"]+)"[^>]*?comic_type="(-?\d+)"', _s):
         _fid, _t = _m.group(1), _m.group(2)
         CAMP_FROM_CONFIG[_fid] = {"0": "bleach", "1": "naruto"}.get(_t, "other")
@@ -441,9 +444,13 @@ for _fn in ("config/fighter.xml", "config/assist.xml"):
 # 个别角色只在 select.xml 里注册（如带二的 trueColors），fighter.xml 只有其 _old 版
 MAIN_ONLY_EXTRA = {"obito_trueColors"}
 bad_assist = [(c["id"], c["name"]) for c in chars.values() if c["isAssist"] and c["baseId"] not in ASSIST_IDS]
+# select 里的 id 常带 _old 后缀（obito_trueColors_old / sasuke_juin_old / karin_old），
+# 主人物卡用的是去掉后缀的正式名，两边都要认。
 bad_main = [(c["id"], c["name"]) for c in chars.values()
             if not c["isAssist"] and not c["id"].startswith("RAW::")
-            and c["baseId"] not in FIGHTER_IDS and c["baseId"] not in MAIN_ONLY_EXTRA]
+            and c["baseId"] not in FIGHTER_IDS
+            and c["baseId"] + "_old" not in FIGHTER_IDS
+            and c["baseId"] not in MAIN_ONLY_EXTRA]
 
 
 def camp_of(fid):
@@ -517,6 +524,34 @@ def tier_of(fid):
 
 def order_of(fid):
     return SELECT_ORDER.get(fid, SELECT_ORDER.get(fid + "_old", 999))
+
+
+# ---------------------------------------------------------------------------
+# select.xml 是「这个角色在当前版本存不存在」的唯一权威。fighter.xml 里有大量
+# 被注释掉的停放角色（urahara / karin / nel…），仅凭文档提到一句就生成卡片，会把
+# 早已不在选人界面的角色混进来。这里按 select 的主人物 / 辅助清单做最终过滤。
+# 例外：香燐是已移除的主人物，用户要求保留历史改动卡（不分阶、不计神阶）。
+# ---------------------------------------------------------------------------
+REMOVED_MAIN_KEEP = {"karin"}
+SELECT_MAIN_BARE = {_bare(x) for x in SELECT_MAIN_IDS}
+SELECT_ASSIST_BARE = {_bare(x) for x in SELECT_ASSIST_IDS}
+
+
+def in_select(fid, role):
+    ids = SELECT_MAIN_BARE if role == ROLE_MAIN else SELECT_ASSIST_BARE
+    raw = SELECT_MAIN_IDS if role == ROLE_MAIN else SELECT_ASSIST_IDS
+    return fid in ids or fid + "_old" in raw
+
+
+dropped_cards = []
+for _key, _c in list(chars.items()):
+    if _c["id"].startswith("RAW::"):
+        continue
+    if _c["role"] == ROLE_MAIN and _c["baseId"] in REMOVED_MAIN_KEEP:
+        continue
+    if not in_select(_c["baseId"], _c["role"]):
+        dropped_cards.append((_c["id"], _c["name"], _c["changeCount"]))
+        del chars[_key]
 
 
 def name_tags(name):
@@ -628,6 +663,8 @@ io.open(os.path.join(OUTDIR, "changelog.js"), "w", encoding="utf-8").write(
     "window.CHANGELOG_DATA=" + txt + ";\n")
 
 print("STATS", out["stats"])
+if dropped_cards:
+    print("\n已按 select.xml 剔除的不存在角色:", dropped_cards)
 if added_empty:
     print("\n按 select.xml 补入的 0 改动角色:", added_empty)
 print("json bytes:", len(txt.encode("utf-8")))
